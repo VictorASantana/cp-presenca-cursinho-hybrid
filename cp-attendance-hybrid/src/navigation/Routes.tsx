@@ -1,4 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home } from '@src/modules/home/home.page';
 import { Theme } from 'assets/theme/theme';
@@ -6,8 +7,29 @@ import { Menu } from '@src/modules/menu/menu.page';
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { Schedule } from '@src/modules/schedule/schedule.page';
+import { Profile } from '@src/modules/profile/profile.page';
 
+export type RootStackParamsList = {
+  Home?: undefined;
+  Profile?: undefined;
+};
 
+export type ScreenProps<T extends keyof RootStackParamsList> =
+  NativeStackScreenProps<RootStackParamsList, T>;
+
+const Stack = createNativeStackNavigator<RootStackParamsList>();
+
+const StackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Home' component={Home} options={() => ({
+      headerShown: false,
+    })}/>
+      <Stack.Screen name='Profile' component={Profile} />
+    </Stack.Navigator>
+  )
+  
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +64,8 @@ export const Routes = () => {
             ) 
           }
         }}/>
-        <Tab.Screen name='Home' component={Home} options={{
+        <Tab.Screen name='Home' component={StackNavigator} options={{
+          headerShown: false,
           tabBarIcon: ({focused}) => {
             return (
               <View style={focused ? 
