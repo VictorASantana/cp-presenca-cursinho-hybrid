@@ -38,7 +38,7 @@ export const Routes = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName='Home'
+        initialRouteName='HomeStack'
         screenOptions={() => ({
           tabBarLabel: () => null,
           tabBarStyle: {
@@ -64,7 +64,7 @@ export const Routes = () => {
             ) 
           }
         }}/>
-        <Tab.Screen name='Home' component={StackNavigator} options={{
+        <Tab.Screen name='HomeStack' component={StackNavigator} options={{
           headerShown: false,
           tabBarIcon: ({focused}) => {
             return (
