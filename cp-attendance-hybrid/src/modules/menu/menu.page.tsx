@@ -18,6 +18,10 @@ const Menu: React.FC<MenuScreenProps> = ({ navigation }) => {
     navigation.navigate('Profile');
   }
 
+  const handleMetricsTap = () => {
+    navigation.navigate('Metrics');
+  }
+
   return (
     <>
       <MenuHeaderStyled>
@@ -33,7 +37,7 @@ const Menu: React.FC<MenuScreenProps> = ({ navigation }) => {
       <MenuAreaViewStyled>
         <MenuButtonAreaStyled>
           <ButtonCard icon="person-outline" text="Meu Perfil" onTap={handleProfileTap} />
-          <ButtonCard icon="analytics" text="Métricas e Benefícios" onTap={() => console.log('click')} />
+          <ButtonCard icon="analytics" text="Métricas e Benefícios" onTap={handleMetricsTap} />
         </MenuButtonAreaStyled>
       </MenuAreaViewStyled>
     </>

@@ -8,6 +8,7 @@ import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { Schedule } from '@src/modules/schedule/schedule.page';
 import { Profile } from '@src/modules/profile/profile.page';
+import { Metrics } from '@src/modules/metrics/metrics.page';
 
 export type RootStackParamsList = {
   Home?: undefined;
@@ -15,6 +16,7 @@ export type RootStackParamsList = {
   Menu?: undefined;
   HomeStack?: undefined;
   Schedule?: undefined;
+  Metrics?: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamsList> =
@@ -30,6 +32,7 @@ const StackNavigator = () => {
     })}/>
       <Stack.Screen name='Menu' component={Menu} />
       <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen name='Metrics' component={Metrics} />
     </Stack.Navigator>
   )
   
