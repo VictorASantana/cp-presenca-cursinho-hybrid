@@ -18,6 +18,17 @@ export const Theme = {
     xxLarge: 40,
     gutter: 88,
     halfGutter: 44,
+  }, 
+  Subjects: {
+    mat: '#F4B860', 
+    por: '#4e55a1',
+    bio: '#58B09C',
+    phys: '#0D5C63', 
+    qui: '#DD1155',
+    att: '#2F0A28', 
+    geo: '#F25F5C',
+    phil: '#6A3E37',
+    hist: '#8332AC'
   }
 };
 
