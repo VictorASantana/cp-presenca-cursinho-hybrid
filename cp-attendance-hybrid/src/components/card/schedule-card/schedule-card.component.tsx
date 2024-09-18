@@ -1,7 +1,7 @@
 import { Theme } from "assets/theme/theme";
 import { ScheduleCardHourStyled, ScheduleCardStyled, ScheduleCardTextStyled } from "./schedule-card.component.style";
 import React from "react";
-import { mapColor } from "assets/utils/utils";
+import { mapColor, mapSubject } from "assets/utils/utils";
 
 interface ScheduleCardProps {
   subject: string;
@@ -15,7 +15,7 @@ export const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   return (
     <ScheduleCardStyled color={mapColor(props.subject)} cardHeight={props.cardHeight} cardTop={props.cardTop}>
       <ScheduleCardHourStyled>{props.startTime}</ScheduleCardHourStyled>
-      <ScheduleCardTextStyled>{props.subject}</ScheduleCardTextStyled>
+      <ScheduleCardTextStyled>{mapSubject(props.subject).slice(0, 3)}</ScheduleCardTextStyled>
       <ScheduleCardHourStyled>{props.endTime}</ScheduleCardHourStyled>
     </ScheduleCardStyled>
   );
