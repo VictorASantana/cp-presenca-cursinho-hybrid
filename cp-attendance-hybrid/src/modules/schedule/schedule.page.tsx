@@ -4,7 +4,7 @@ import { ScheduleItem } from "@src/data/types/schedule-item.type";
 import { scheduleMock } from "@src/data/mock/schedule.mock";
 import { ScheduleCard } from "@src/components/card/schedule-card/schedule-card.component";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Title } from "assets/utils/global.style";
 
 const CELL_HEIGHT = 100;
@@ -36,7 +36,7 @@ const getCardHeight = (startTime: string, endTime: string) => {
 };
 
 const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
-const hours = ['15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00'];
+const hours = ['16:05', '17:00', '17:55', '18:50', '19:40', '20:10', '21:05'];
 
 export const Schedule: React.FC = () => {
 
@@ -45,43 +45,48 @@ export const Schedule: React.FC = () => {
   const scheduleItems = scheduleMock;
 
   scheduleItems.forEach(item => {
-    const timeKey = hours.find(hour => hour.startsWith(item.startTime.split(':')[0]));
+    const timeKey = hours.find(hour => hour === item.startTime);
     if (timeKey) {
       table[timeKey][item.weekDay].push(item);
     }
   });
 
   return (
-    <ScrollView>
+    <>
       <SafeAreaView />
-      <Title>{'Grade Horária'}</Title>
-      <TableContainer>
-        <HeaderRow>
-          <HeaderCell />
-          {days.map((day) => (
-            <HeaderCell key={day}>{day}</HeaderCell>
-          ))}
-        </HeaderRow>
-        {hours.map((hour) => (
-          <Row key={hour}>
-            <HeaderCell>{hour}</HeaderCell>
+      <View style={{marginLeft: 8}}>
+        <Title>{'Grade Horária'}</Title>
+      </View>
+      <ScrollView>
+        <TableContainer>
+          <HeaderRow>
+            <HeaderCell />
             {days.map((day) => (
-              <Cell key={`${hour}-${day}`}>{
-                table[hour][day].map((item, index) => (
-                  <ScheduleCard 
-                    key={index}
-                    subject={item.subject}
-                    startTime={item.startTime}
-                    endTime={item.endTime}
-                    cardHeight={getCardHeight(item.startTime, item.endTime)}
-                    cardTop={getCellTop(item.startTime)}
-                  />
-                ))
-              }</Cell>
+              <HeaderCell key={day}>{day}</HeaderCell>
             ))}
-          </Row>
-        ))}
-    </TableContainer>
-  </ScrollView>  
+          </HeaderRow>
+          {hours.map((hour) => (
+            <Row key={hour}>
+              <HeaderCell>{hour}</HeaderCell>
+              {days.map((day) => (
+                <Cell key={`${hour}-${day}`}>{
+                  table[hour][day].map((item, index) => (
+                    <ScheduleCard 
+                      key={index}
+                      subject={item.subject}
+                      startTime={item.startTime}
+                      endTime={item.endTime}
+                      cardHeight={getCardHeight(item.startTime, item.endTime)}
+                      cardTop={getCellTop(item.startTime)}
+                    />
+                  ))
+                }</Cell>
+              ))}
+            </Row>
+          ))}
+      </TableContainer>
+      </ScrollView>  
+    </>
+    
   );
 }
