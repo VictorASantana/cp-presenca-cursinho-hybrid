@@ -14,9 +14,10 @@ export const ButtonCardWrapperStyled = styled.TouchableOpacity`
   padding: 8px;
 `;
 
-export const ButtonCardTextStyled = styled.Text`
+export const ButtonCardTextStyled = styled.Text<{color: string}>`
   margin-left: 16px;
   font-size: 16px;
   font-weight: bold;
+  color: ${props => props.color};
 `;
 
