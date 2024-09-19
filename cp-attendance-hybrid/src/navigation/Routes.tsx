@@ -31,7 +31,7 @@ const StackNavigator = () => {
       headerShown: false,
     })}/>
       <Stack.Screen name='Menu' component={Menu} />
-      <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen options={() => ({headerShown: false})} name='Profile' component={Profile} />
       <Stack.Screen name='Metrics' component={Metrics} />
     </Stack.Navigator>
   )
@@ -47,6 +47,7 @@ export const Routes = () => {
       <Tab.Navigator
         initialRouteName='HomeStack'
         screenOptions={() => ({
+          tabBarHideOnKeyboard: true,
           tabBarLabel: () => null,
           tabBarStyle: {
             backgroundColor: Theme.Colors.primary, 
