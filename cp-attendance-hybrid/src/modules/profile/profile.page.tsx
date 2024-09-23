@@ -5,7 +5,7 @@ import { ButtonCard } from "@src/components/button-card/button-card.component";
 import { Theme } from "assets/theme/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { EditProfileModal } from "./components/edit-profile-modal.component";
-import { ModalButton } from "@src/components/button/button-modal/base-button.component";
+import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
 
 export const Profile: React.FC = () => {
   const [editProfileVisible, setEditProfileVisible] = React.useState(false);
@@ -43,7 +43,7 @@ export const Profile: React.FC = () => {
           <EditModalItemTitle>{'Email: '}</EditModalItemTitle>
           <EditModalItemText>{'fulanosilva@email.com'}</EditModalItemText>
         </EditModalItem>
-        <ModalButton text="Editar"/>
+        <ModalButton text="Editar" />
         <ModalButton text="Cancelar" outline onTap={() => setEditProfileVisible(false)}/>
       </EditProfileModal>
     </>
