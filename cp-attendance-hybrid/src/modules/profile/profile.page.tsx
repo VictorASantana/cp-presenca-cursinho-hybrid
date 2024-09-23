@@ -6,7 +6,7 @@ import { Theme } from "assets/theme/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { EditProfileModal } from "./components/edit-profile-modal.component";
 import Divider from "@src/components/divider/divider.component";
-import { ModalButton } from "@src/components/button/button-modal/base-button.component";
+import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
 
 export const Profile: React.FC = () => {
   const [editProfileVisible, setEditProfileVisible] = React.useState(false);
@@ -47,7 +47,7 @@ export const Profile: React.FC = () => {
           <EditModalItemText>{'fulanosilva@email.com'}</EditModalItemText>
           <Divider color={Theme.Colors.darkGray}/>
         </EditModalItem>
-        <ModalButton text="Editar"/>
+        <ModalButton text="Editar" />
         <ModalButton text="Cancelar" outline onTap={() => setEditProfileVisible(false)}/>
       </EditProfileModal>
     </>
