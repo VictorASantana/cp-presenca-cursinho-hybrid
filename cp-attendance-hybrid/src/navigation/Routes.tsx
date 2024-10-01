@@ -88,6 +88,7 @@ export const Routes = () => {
           }
         }}/>
         <Tab.Screen name='Schedule' component={Schedule} options={{
+          headerShown: false,
           tabBarIcon: ({focused}) => {
             return (
               <View style={focused ? 
