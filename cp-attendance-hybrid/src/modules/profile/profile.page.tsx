@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { EditModalItem, EditModalItemText, EditModalItemTitle, ProfileAreaViewStyled, ProfileButtonAreaStyled, ProfileHeaderStyled, ProfileHeaderText, ProfileHeaderTitle } from "./profile.page.style";
 import { ProfilePhoto } from "@src/components/profile/profile-photo.component";
 import { ButtonCard } from "@src/components/button-card/button-card.component";
@@ -7,8 +7,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { EditProfileModal } from "./components/edit-profile-modal.component";
 import Divider from "@src/components/divider/divider.component";
 import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
+import { UserRepository } from "@src/data/repositories/user.repository";
 
 export const Profile: React.FC = () => {
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userFetch = await UserRepository.getUser();
+      console.log(userFetch);
+      if (!(userFetch instanceof Error)) setUser(userFetch);
+    }
+    getUser();
+  }, []);
+
   const [editProfileVisible, setEditProfileVisible] = React.useState(false);
 
   const handleEditProfileTap = () => {
@@ -20,8 +32,8 @@ export const Profile: React.FC = () => {
       <ProfileHeaderStyled>
         <SafeAreaView />
         <ProfilePhoto size={120}/>
-        <ProfileHeaderTitle>{'Fulano da Silva'}</ProfileHeaderTitle>
-        <ProfileHeaderText>{'ID 01'}</ProfileHeaderText>
+        <ProfileHeaderTitle>{user?.fullname}</ProfileHeaderTitle>
+        <ProfileHeaderText>{'ID: ' + user?.id}</ProfileHeaderText>
       </ProfileHeaderStyled>
       <ProfileAreaViewStyled>
         <ProfileButtonAreaStyled>

@@ -5,7 +5,6 @@ import { HomeBodyStyled, HomeEmptyStyled, HomeHeaderStyled } from "./home.page.s
 import { FlatList, Image, Text, View } from "react-native";
 import { ProfilePhoto } from "@src/components/profile/profile-photo.component";
 import { RootStackParamsList } from "@src/navigation/Routes";
-import TodayClasses from '../../data/mock/class-mock';
 import { Theme } from "assets/theme/theme";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -13,6 +12,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useEffect, useState } from "react";
 import { LessonRepository } from "@src/data/repositories/lesson.repository";
+import { UserRepository } from "@src/data/repositories/user.repository";
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamsList, 'Home'>;
@@ -21,13 +21,19 @@ type HomeScreenProps = {
 
 export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const getLessons = async () => {
       const lessonVector = await LessonRepository.listLessons();
       if (!(lessonVector instanceof Error)) setLessons(lessonVector);
     }
+    const getUser = async () => {
+      const userFetch = await UserRepository.getUser();
+      if (!(userFetch instanceof Error)) setUser(userFetch);
+    }
     getLessons();
+    getUser();
   }, []);
 
   const handleProfileTap = () => {
@@ -64,7 +70,7 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
           <ProfilePhoto onPress={handleProfileTap}/>
         </HomeHeaderStyled>
         <View style={{  marginLeft: Theme.Spacing.medium, padding: Theme.Spacing.small }}>
-          <Title>{'Olá, Fulano'}</Title>
+          <Title>{'Olá, ' + user?.fullname.split(' ')[0]}</Title>
           <Subtitle>{'Aulas de hoje'}</Subtitle>
           <Body>{formattedToday}</Body>
         </View>
