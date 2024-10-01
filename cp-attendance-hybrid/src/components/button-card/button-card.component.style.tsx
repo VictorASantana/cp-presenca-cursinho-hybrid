@@ -8,15 +8,15 @@ export const ButtonCardWrapperStyled = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  border-radius: 8px;
-  margin-top: 16px;
-  margin-bottom: 8px;
-  padding: 8px;
+  border-radius: ${Theme.Spacing.small}px;
+  margin-top: ${Theme.Spacing.medium}px;
+  margin-bottom: ${Theme.Spacing.small}px;
+  padding: ${Theme.Spacing.small}px;
 `;
 
 export const ButtonCardTextStyled = styled.Text`
-  margin-left: 16px;
-  font-size: 16px;
+  margin-left: ${Theme.Spacing.medium}px;
+  font-size: ${Theme.Spacing.medium}px;
   font-weight: bold;
 `;
 
