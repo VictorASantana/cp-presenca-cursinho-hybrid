@@ -4,13 +4,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { HomeBodyStyled, HomeHeaderStyled } from "./home.page.style";
 import { FlatList, Image, View } from "react-native";
 import { ProfilePhoto } from "@src/components/profile/profile-photo.component";
-import { ScreenProps } from "@src/navigation/Routes";
+import { RootStackParamsList } from "@src/navigation/Routes";
 import TodayClasses from '../../data/mock/class-mock';
 import { Theme } from "assets/theme/theme";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
-export const Home: React.FC<ScreenProps<'Home'>> = ({ navigation }) => {
+type HomeScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamsList, 'Home'>;
+  route: RouteProp<RootStackParamsList, 'Home'>;
+};
+
+export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   const handleProfileTap = () => {
     navigation.navigate('Profile');
   }
