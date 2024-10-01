@@ -37,7 +37,7 @@ const Menu: React.FC<MenuScreenProps> = ({ navigation }) => {
       <MenuAreaViewStyled>
         <MenuButtonAreaStyled>
           <ButtonCard icon="person-outline" text="Meu Perfil" onTap={handleProfileTap} />
-          <ButtonCard icon="analytics" text="Métricas e Benefícios" onTap={handleMetricsTap} />
+          <ButtonCard icon="trending-up" text="Métricas e Benefícios" onTap={handleMetricsTap} />
         </MenuButtonAreaStyled>
       </MenuAreaViewStyled>
     </>

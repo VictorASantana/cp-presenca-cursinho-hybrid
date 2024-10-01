@@ -3,7 +3,7 @@ import { ProfilePhotoButton } from "./profile-photo.component.style";
 import { Theme } from "assets/theme/theme";
 
 interface ProfilePhotoProps {
-  onPress: () => void;
+  onPress?: () => void;
   size?: number; 
 }
 
