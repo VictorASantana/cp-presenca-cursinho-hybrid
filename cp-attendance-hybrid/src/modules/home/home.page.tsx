@@ -1,11 +1,10 @@
 import { Body, GlobalContainer, Subtitle, Title } from "assets/utils/global.style"
 import { ClassCard } from "@src/components/card/class-card/class-card.component";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HomeBodyStyled, HomeEmptyStyled, HomeHeaderStyled } from "./home.page.style";
+import { HomeBodyStyled, HomeHeaderStyled } from "./home.page.style";
 import { FlatList, Image, Text, View } from "react-native";
 import { ProfilePhoto } from "@src/components/profile/profile-photo.component";
 import { RootStackParamsList } from "@src/navigation/Routes";
-import TodayClasses from '../../data/mock/class-mock';
 import { Theme } from "assets/theme/theme";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -13,6 +12,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useEffect, useState } from "react";
 import { LessonRepository } from "@src/data/repositories/lesson.repository";
+import EmptyState from "@freakycoder/react-native-empty-state";
+import EmptyStateImage from '../../../assets/EmptyStateImage.png';
+import ErrorStateImage from '../../../assets/ErrorStateImage.png';
+
+//TODO: passar filtragem para o backend
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamsList, 'Home'>;
@@ -21,11 +25,13 @@ type HomeScreenProps = {
 
 export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [errorLesson, setErrorLesson] = useState<Error>();
 
   useEffect(() => {
     const getLessons = async () => {
       const lessonVector = await LessonRepository.listLessons();
       if (!(lessonVector instanceof Error)) setLessons(lessonVector);
+      else setErrorLesson(lessonVector);
     }
     getLessons();
   }, []);
@@ -70,13 +76,17 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
         </View>
       </View>
       <HomeBodyStyled>
-        {lessons ? <FlatList 
+        {lessons.length > 0 ? <FlatList 
           data={lessons.filter(lesson => isToday(lesson.startDatetime) && lesson.endDatetime > new Date())}
           renderItem={renderItem}
         /> : 
-          <HomeEmptyStyled>
-            <Title>{'Sem aulas carregadas por hoje'}</Title>
-          </HomeEmptyStyled>}
+          <EmptyState 
+            title={errorLesson ? "Erro!" : "Sem aulas encontradas"} 
+            description={errorLesson ? "Nao foi possivel encontrar suas aulas, tente novamente mais tarde." : "Parece que você nao tem aulas hoje."} 
+            imageSource={errorLesson ? ErrorStateImage : EmptyStateImage} 
+            imageStyle={{ marginTop: 120, width: 120, height: 120 }}
+          />
+        }
       </HomeBodyStyled>
     </GlobalContainer>
   );

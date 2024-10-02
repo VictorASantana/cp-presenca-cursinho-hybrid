@@ -16,11 +16,3 @@ export const HomeBodyStyled = styled.View`
   margin-top: ${Theme.Spacing.small}px;
   overflow: auto;
 `;
-
-export const HomeEmptyStyled = styled.View`
-  flex: 0.5;
-  background-color: ${Theme.Colors.gray};
-  justify-content: center;
-  align-items: center;
-  margin-top: 35px;
-`;
