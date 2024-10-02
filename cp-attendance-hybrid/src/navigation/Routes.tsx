@@ -104,6 +104,7 @@ const TabNavigator = () => {
         })}
       >
         <Tab.Screen name='Menu' component={Menu} options={{
+          headerShown: false,
           tabBarButton: (props) => (
             <TabButton onPress={props.onPress} selected={props.accessibilityState?.selected ?? false} icon={'menu'} label='Menu'/>
           ),    
@@ -115,6 +116,7 @@ const TabNavigator = () => {
           ),    
         }}/>
         <Tab.Screen name='Schedule' component={Schedule} options={{
+          headerShown: false,
           tabBarButton: (props) => (
             <TabButton onPress={props.onPress} selected={props.accessibilityState?.selected ?? false} icon={'calendar'} label='Schedule'/>
           ),    
@@ -132,6 +134,10 @@ export const Routes = () => {
           headerShown: false,
         })}/>
         <Stack.Screen name='Profile' component={Profile} />
+        <Stack.Screen name='Metrics' component={Metrics} />
+        <Stack.Screen name='Signin' component={Signin} options={() => ({
+          headerShown: false,
+        })}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
