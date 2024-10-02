@@ -3,21 +3,13 @@ import { ClassCardButtonStyled, ClassCardButtonTextStyled, ClassCardStyled, Clas
 interface ClassCardProps {
   title: string;
   activate: boolean;
-  isNow: boolean;
-  time: Date;
 }
 
 export const ClassCard: React.FC<ClassCardProps> = props => {
-  function formatDateToHHMM(date: Date): string {
-    const hours: string = String(date.getHours()).padStart(2, '0'); // Obtém as horas e garante que tenha 2 dígitos
-    const minutes: string = String(date.getMinutes()).padStart(2, '0'); // Obtém os minutos e garante que tenha 2 dígitos
-    return `${hours}:${minutes}`; // Retorna a string no formato HH:MM
-  }
-
   return (
-    <ClassCardStyled numberOfClasses={1} activated={props.isNow}>
-      <ClassCardTitleStyled>{formatDateToHHMM(props.time)}</ClassCardTitleStyled>
-      <ClassCardTextStyled>{props.title}</ClassCardTextStyled>
+    <ClassCardStyled numberOfClasses={1} activated={props.activate}>
+      <ClassCardTitleStyled>{props.title}</ClassCardTitleStyled>
+      <ClassCardTextStyled>{'Disciplina'}</ClassCardTextStyled>
       {props.activate ? 
         <ClassCardButtonStyled>
           <ClassCardButtonTextStyled>{'Registrar Presença'}</ClassCardButtonTextStyled>  
