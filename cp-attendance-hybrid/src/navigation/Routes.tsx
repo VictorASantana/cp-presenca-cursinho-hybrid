@@ -12,6 +12,7 @@ import { Schedule } from '@src/modules/schedule/schedule.page';
 import { Profile } from '@src/modules/profile/profile.page';
 import { useEffect, useRef } from 'react';
 import * as Animatable from 'react-native-animatable';
+import { useAuth } from '@src/context/auth.context';
 
 export type RootStackParamsList = {
   Home?: undefined;
@@ -125,20 +126,36 @@ const TabNavigator = () => {
   )
 }
 
+const AppStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Tabs' component={TabNavigator} options={() => ({
+        headerShown: false,
+      })}/>
+      <Stack.Screen name='Profile' component={Profile} options={() => ({
+        headerShown: false,
+      })}/>
+      <Stack.Screen name='Metrics' component={Metrics} />
+    </Stack.Navigator>
+  )
+}
+
+
 export const Routes = () => {
- 
+  const {authData} = useAuth();
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Tabs' component={TabNavigator} options={() => ({
-          headerShown: false,
-        })}/>
-        <Stack.Screen name='Profile' component={Profile} />
-        <Stack.Screen name='Metrics' component={Metrics} />
-        <Stack.Screen name='Signin' component={Signin} options={() => ({
-          headerShown: false,
-        })}/>
-      </Stack.Navigator>
+      {!authData?.token ? 
+        <Stack.Navigator>
+          <Stack.Screen name='Signin' component={Signin} options={() => ({
+            headerShown: false,
+            animationTypeForReplace: 'push',
+          })}/>
+        </Stack.Navigator> :
+        <AppStack />
+      }
+      
     </NavigationContainer>
   );
 };

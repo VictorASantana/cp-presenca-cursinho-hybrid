@@ -47,3 +47,9 @@ export const ForgetPassword = styled.Text`
   font-size: 16px;
   color: ${Theme.Colors.secondary};
 `
+
+export const LoginErrorMessage = styled.Text`
+  margin-top: ${Theme.Spacing.small}px;
+  font-size: 16px;
+  color: ${Theme.Colors.secondary};
+`
