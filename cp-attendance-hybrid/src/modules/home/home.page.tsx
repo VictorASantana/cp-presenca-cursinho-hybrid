@@ -16,6 +16,7 @@ import EmptyState from "@freakycoder/react-native-empty-state";
 import EmptyStateImage from '../../../assets/EmptyStateImage.png';
 import ErrorStateImage from '../../../assets/ErrorStateImage.png';
 import { CustomModal } from "@src/components/modal/modal.component";
+import { useUser } from "@src/context/user.context";
 
 //TODO: passar filtragem para o backend
 
@@ -28,6 +29,7 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [errorLesson, setErrorLesson] = useState<Error>();
   const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
+  const user = useUser();
 
   useEffect(() => {
     const getLessons = async () => {
@@ -79,7 +81,7 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
           <ProfilePhoto onPress={handleProfileTap}/>
         </HomeHeaderStyled>
         <View style={{  marginLeft: Theme.Spacing.medium, padding: Theme.Spacing.small }}>
-          <Title>{'Olá, Fulano'}</Title>
+          <Title>{'Olá, ' + user.user?.username}</Title>
           <Subtitle>{'Aulas de hoje'}</Subtitle>
           <Body>{formattedToday}</Body>
         </View>
