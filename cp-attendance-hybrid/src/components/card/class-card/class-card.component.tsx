@@ -5,6 +5,7 @@ interface ClassCardProps {
   activate: boolean;
   isNow: boolean;
   time: Date;
+  onClick?: () => void;
 }
 
 export const ClassCard: React.FC<ClassCardProps> = props => {
@@ -19,7 +20,7 @@ export const ClassCard: React.FC<ClassCardProps> = props => {
       <ClassCardTitleStyled>{formatDateToHHMM(props.time)}</ClassCardTitleStyled>
       <ClassCardTextStyled>{props.title}</ClassCardTextStyled>
       {props.activate ? 
-        <ClassCardButtonStyled>
+        <ClassCardButtonStyled onPress={props.onClick}>
           <ClassCardButtonTextStyled>{'Registrar Presença'}</ClassCardButtonTextStyled>  
         </ClassCardButtonStyled> 
         : 

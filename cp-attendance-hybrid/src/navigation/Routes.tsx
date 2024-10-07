@@ -31,12 +31,6 @@ interface TabButtonProps {
   selected: boolean;
 }
 
-const TabArr = [
-  { route: 'Home', label: 'Home', icon: 'home', component: Home },
-  { route: 'Menu', label: 'Menu', icon: 'menu', component: Menu },
-  { route: 'Schedule', label: 'Grade', icon: 'calendar', component: Schedule },
-];
-
 export type ScreenProps<T extends keyof RootStackParamsList> =
   NativeStackScreenProps<RootStackParamsList, T>;
 
@@ -90,6 +84,7 @@ const TabNavigator = () => {
     <Tab.Navigator
         initialRouteName='Home'
         screenOptions={() => ({
+          tabBarHideOnKeyboard: true,
           tabBarLabel: () => null,
           tabBarStyle: {
             position: 'absolute',
@@ -157,7 +152,6 @@ export const Routes = () => {
         </Stack.Navigator> :
         <AppStack />
       }
-      
     </NavigationContainer>
   );
 };
