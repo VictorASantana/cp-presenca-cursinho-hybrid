@@ -13,6 +13,7 @@ import { Profile } from '@src/modules/profile/profile.page';
 import { useEffect, useRef } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { useAuth } from '@src/context/auth.context';
+import { Subject } from '@src/modules/subjects/subjects.page';
 
 export type RootStackParamsList = {
   Home?: undefined;
@@ -21,6 +22,7 @@ export type RootStackParamsList = {
   Metrics?: undefined;
   Signin?: undefined;
   Schedule?: undefined;
+  Subjects?: undefined;
   Tabs?: undefined;
 };
 
@@ -111,10 +113,10 @@ const TabNavigator = () => {
             <TabButton onPress={props.onPress} selected={props.accessibilityState?.selected ?? false} icon={'home'} label='Home'/>
           ),    
         }}/>
-        <Tab.Screen name='Schedule' component={Schedule} options={{
+        <Tab.Screen name='Subjects' component={Subject} options={{
           headerShown: false,
           tabBarButton: (props) => (
-            <TabButton onPress={props.onPress} selected={props.accessibilityState?.selected ?? false} icon={'calendar'} label='Schedule'/>
+            <TabButton onPress={props.onPress} selected={props.accessibilityState?.selected ?? false} icon={'book'} label='Disciplinas'/>
           ),    
         }}/>
       </Tab.Navigator>
@@ -131,6 +133,9 @@ const AppStack = () => {
         headerShown: false,
       })}/>
       <Stack.Screen name='Metrics' component={Metrics} options={() => ({
+        headerShown: false,
+      })}/>
+      <Stack.Screen name='Schedule' component={Schedule} options={() => ({
         headerShown: false,
       })}/>
     </Stack.Navigator>

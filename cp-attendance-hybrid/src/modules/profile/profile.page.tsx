@@ -1,5 +1,5 @@
 import React from "react";
-import { EditModalItem, EditModalItemText, EditModalItemTitle, ProfileAreaViewStyled, ProfileButtonAreaStyled, ProfileHeaderStyled, ProfileHeaderText, ProfileHeaderTitle } from "./profile.page.style";
+import { EditModalItem, EditModalItemText, EditModalItemTitle, ProfileAreaViewStyled, ProfileButtonAreaStyled, ProfileHeaderStyled, ProfileHeaderText, ProfileHeaderTitle, TopAreaView } from "./profile.page.style";
 import { ProfilePhoto } from "@src/components/profile/profile-photo.component";
 import { ButtonCard } from "@src/components/button-card/button-card.component";
 import { Theme } from "assets/theme/theme";
@@ -8,8 +8,18 @@ import { EditProfileModal } from "./components/edit-profile-modal.component";
 import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
 import { useAuth } from "@src/context/auth.context";
 import { useUser } from "@src/context/user.context";
+import Icon from 'react-native-vector-icons/Entypo';
+import { Title } from "assets/utils/global.style";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamsList } from "@src/navigation/Routes";
+import { RouteProp } from "@react-navigation/native";
 
-export const Profile: React.FC = () => {
+type ProfileScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamsList, 'Profile'>;
+  route: RouteProp<RootStackParamsList, 'Profile'>;
+};
+
+export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const [editProfileVisible, setEditProfileVisible] = React.useState(false);
   const auth = useAuth();
   const user = useUser();
@@ -22,9 +32,17 @@ export const Profile: React.FC = () => {
     auth.signOut();  
   }
 
+  const handleBackTap = () => {
+    navigation.pop();
+  }
+
   return (
     <>
       <ProfileHeaderStyled>
+        <TopAreaView>
+          <Icon name={'chevron-left'} color={Theme.Colors.darkGray} size={30} style={{ margin: 8 }} onPress={handleBackTap}/>
+          <Title>{'Perfil'}</Title>
+        </TopAreaView>
         <SafeAreaView />
         <ProfilePhoto size={120}/>
         <ProfileHeaderTitle>{user.user?.username}</ProfileHeaderTitle>

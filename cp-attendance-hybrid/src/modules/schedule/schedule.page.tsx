@@ -6,6 +6,11 @@ import { ScheduleCard } from "@src/components/card/schedule-card/schedule-card.c
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, View } from "react-native";
 import { Title } from "assets/utils/global.style";
+import { Theme } from "assets/theme/theme";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamsList } from "@src/navigation/Routes";
+import { RouteProp } from "@react-navigation/native";
+import Icon from 'react-native-vector-icons/Entypo';
 
 const CELL_HEIGHT = 100;
 const TOTAL_HOURS = 12; 
@@ -38,7 +43,12 @@ const getCardHeight = (startTime: string, endTime: string) => {
 const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
 const hours = ['16:05', '17:00', '17:55', '18:50', '19:40', '20:10', '21:05'];
 
-export const Schedule: React.FC = () => {
+type ScheduleScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamsList, 'Schedule'>;
+  route: RouteProp<RootStackParamsList, 'Schedule'>;
+};
+
+export const Schedule: React.FC<ScheduleScreenProps> = ({ navigation }) => {
 
   const table = createEmptyTable(days, hours);
 
@@ -51,10 +61,15 @@ export const Schedule: React.FC = () => {
     }
   });
 
+  const handleBackTap = () => {
+    navigation.pop();
+  }
+
   return (
     <>
       <SafeAreaView />
-      <View style={{marginLeft: 8}}>
+      <View style={{marginLeft: 8, flexDirection: 'row'}}>
+        <Icon name={'chevron-left'} color={Theme.Colors.darkGray} size={30} style={{ marginRight: 8, marginTop: 20 }} onPress={handleBackTap}/>
         <Title>{'Grade Horária'}</Title>
       </View>
       <ScrollView>

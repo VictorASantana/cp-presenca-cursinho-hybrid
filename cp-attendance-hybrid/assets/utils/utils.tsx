@@ -6,6 +6,8 @@ export const mapColor = (subject: string) => {
       return Theme.Subjects.mat;
     case 'Qui': 
       return Theme.Subjects.qui;
+    case 'Quí': 
+      return Theme.Subjects.qui;
     case 'His': 
       return Theme.Subjects.hist;
     case 'Geo': 
@@ -16,7 +18,11 @@ export const mapColor = (subject: string) => {
       return Theme.Subjects.por;
     case 'Phys': 
       return Theme.Subjects.phys;
+    case 'Fís': 
+      return Theme.Subjects.phys;
     case 'Phyl': 
+      return Theme.Subjects.phil;
+    case 'Fil': 
       return Theme.Subjects.phil;
     case 'Att': 
       return Theme.Subjects.att;

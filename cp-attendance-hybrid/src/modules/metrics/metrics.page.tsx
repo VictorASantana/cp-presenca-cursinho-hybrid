@@ -42,7 +42,7 @@ export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
         <MetricsStyled>
           <SubjectMetrics>
             {metricsMock.map(metrics => (
-              <><SubjectMetricsTextArea>
+              <><SubjectMetricsTextArea key={metrics.subject}>
                 <SubjectMetricsTitle>{metrics.subject}</SubjectMetricsTitle>
                 <SubjectMetricsTitle>{(metrics.percentage*100) + '%'}</SubjectMetricsTitle>
               </SubjectMetricsTextArea><ProgressBar progress={metrics.percentage*100} /></>
