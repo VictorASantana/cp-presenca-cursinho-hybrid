@@ -6,12 +6,18 @@ import { Theme } from "assets/theme/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { EditProfileModal } from "./components/edit-profile-modal.component";
 import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
+import { useAuth } from "@src/context/auth.context";
 
 export const Profile: React.FC = () => {
   const [editProfileVisible, setEditProfileVisible] = React.useState(false);
+  const auth = useAuth();
 
   const handleEditProfileTap = () => {
     setEditProfileVisible(true);
+  }
+
+  const handleLogoutTap = () => {
+    auth.signOut();  
   }
 
   return (
@@ -27,7 +33,7 @@ export const Profile: React.FC = () => {
           <ButtonCard icon="lock-closed-outline" text="Alterar Senha" onTap={() => console.log('click')} />
           <ButtonCard icon="notifications-outline" text="Notificações" onTap={() => console.log('click')} />
           <ButtonCard icon="person-outline" text="Meus Dados" onTap={handleEditProfileTap} />
-          <ButtonCard icon="log-out-outline" text="Sair" onTap={() => console.log('click')} color={Theme.Colors.secondary} />
+          <ButtonCard icon="log-out-outline" text="Sair" onTap={handleLogoutTap} color={Theme.Colors.secondary} />
         </ProfileButtonAreaStyled>
       </ProfileAreaViewStyled>
       <EditProfileModal visible={editProfileVisible} title="Meus Dados">

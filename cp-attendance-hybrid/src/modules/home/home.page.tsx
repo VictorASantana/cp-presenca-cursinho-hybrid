@@ -11,7 +11,7 @@ import { ptBR } from 'date-fns/locale';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useEffect, useState } from "react";
-import { LessonRepository } from "@src/data/repositories/lesson.repository";
+import { LessonService } from "@src/data/service/lesson.service";
 import EmptyState from "@freakycoder/react-native-empty-state";
 import EmptyStateImage from '../../../assets/EmptyStateImage.png';
 import ErrorStateImage from '../../../assets/ErrorStateImage.png';
@@ -29,7 +29,7 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   useEffect(() => {
     const getLessons = async () => {
-      const lessonVector = await LessonRepository.listLessons();
+      const lessonVector = await LessonService.listLessons();
       if (!(lessonVector instanceof Error)) setLessons(lessonVector);
       else setErrorLesson(lessonVector);
     }
