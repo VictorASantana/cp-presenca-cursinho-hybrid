@@ -30,7 +30,10 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   useEffect(() => {
     const getLessons = async () => {
       const lessonVector = await LessonService.listLessons();
-      if (!(lessonVector instanceof Error)) setLessons(lessonVector);
+      if (!(lessonVector instanceof Error)){
+        const filteredArray = lessonVector.filter(lesson => isToday(lesson.startDatetime) && lesson.endDatetime > new Date())
+        setLessons(filteredArray);
+      } 
       else setErrorLesson(lessonVector);
     }
     getLessons();
@@ -82,7 +85,7 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
         /> : 
           <EmptyState 
             title={errorLesson ? "Erro!" : "Sem aulas encontradas"} 
-            description={errorLesson ? "Nao foi possivel encontrar suas aulas, tente novamente mais tarde." : "Parece que você nao tem aulas hoje."} 
+            description={errorLesson ? "Não foi possivel encontrar suas aulas, tente novamente mais tarde." : "Parece que você não tem aulas hoje."} 
             imageSource={errorLesson ? ErrorStateImage : EmptyStateImage} 
             imageStyle={{ marginTop: 120, width: 120, height: 120 }}
           />

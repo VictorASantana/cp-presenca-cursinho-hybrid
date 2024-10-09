@@ -135,7 +135,9 @@ const AppStack = () => {
       <Stack.Screen name='Profile' component={Profile} options={() => ({
         headerShown: false,
       })}/>
-      <Stack.Screen name='Metrics' component={Metrics} />
+      <Stack.Screen name='Metrics' component={Metrics} options={() => ({
+        headerShown: false,
+      })}/>
     </Stack.Navigator>
   )
 }
