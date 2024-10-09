@@ -10,6 +10,16 @@ export const ProfileHeaderStyled = styled.View`
   border-bottom-left-radius: 8px;
 `;
 
+export const TopAreaView = styled.View`
+  position: absolute;
+  top: 20;
+  left: 5;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: ${Theme.Spacing.xxSmall}px;
+`;
+
 export const ProfileHeaderTitle = styled.Text`
   font-weight: bolder;
   font-size: 24px;

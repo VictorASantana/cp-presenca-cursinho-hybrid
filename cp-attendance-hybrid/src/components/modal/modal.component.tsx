@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Modal, Platform } from 'react-native';
+import { Modal } from 'react-native';
 import { ButtonArea, ModalBackground, ModalContainer, ModalText } from './modal.component.style';
 
 import { ModalButton } from '../button/button-modal/modal-button.component';
