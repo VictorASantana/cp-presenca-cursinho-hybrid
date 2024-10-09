@@ -2,7 +2,7 @@ import { Body, GlobalContainer, Subtitle, Title } from "assets/utils/global.styl
 import { ClassCard } from "@src/components/card/class-card/class-card.component";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HomeBodyStyled, HomeHeaderStyled } from "./home.page.style";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, View } from "react-native";
 import { ProfilePhoto } from "@src/components/profile/profile-photo.component";
 import { RootStackParamsList } from "@src/navigation/Routes";
 import { Theme } from "assets/theme/theme";
@@ -15,6 +15,7 @@ import { LessonService } from "@src/data/service/lesson.service";
 import EmptyState from "@freakycoder/react-native-empty-state";
 import EmptyStateImage from '../../../assets/EmptyStateImage.png';
 import ErrorStateImage from '../../../assets/ErrorStateImage.png';
+import { CustomModal } from "@src/components/modal/modal.component";
 
 //TODO: passar filtragem para o backend
 
@@ -26,6 +27,7 @@ type HomeScreenProps = {
 export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [errorLesson, setErrorLesson] = useState<Error>();
+  const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
 
   useEffect(() => {
     const getLessons = async () => {
@@ -43,10 +45,14 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
     navigation.navigate('Profile');
   }
 
+  const handleAttendanceTap = () => {
+    
+  }
+
   const renderItem = ({ item }: { item: { subject: string, startDatetime: Date, endDatetime: Date, isAttendanceRegistrable: boolean } }) => {
     return (
       <View style={{ margin: Theme.Spacing.small }}>
-        <ClassCard title={item.subject} time={item.startDatetime} activate={item.isAttendanceRegistrable} isNow={isNowBetween(item.startDatetime, item.endDatetime)}/>
+        <ClassCard onClick={() => setAttendanceModalOpen(true)} title={item.subject} time={item.startDatetime} activate={item.isAttendanceRegistrable} isNow={isNowBetween(item.startDatetime, item.endDatetime)}/>
       </View>
     )
   }
@@ -89,6 +95,9 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
             imageSource={errorLesson ? ErrorStateImage : EmptyStateImage} 
             imageStyle={{ marginTop: 120, width: 120, height: 120 }}
           />
+        }
+        {
+          attendanceModalOpen && <CustomModal visible={attendanceModalOpen} close={() => setAttendanceModalOpen(false)} text={"Registrar presença"} />
         }
       </HomeBodyStyled>
     </GlobalContainer>

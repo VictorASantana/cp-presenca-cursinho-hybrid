@@ -12,6 +12,7 @@ export const ButtonModalStyled = styled.TouchableOpacity<{ outline: boolean, wid
   height: ${Theme.Spacing.halfGutter}px;
   font-size: ${Theme.Spacing.xSmall}px;
   padding: 8px 0;
+  margin-top: 10px;
 `;
 
 export const ButtonModalTextStyled = styled.Text<{ outline: boolean }>`
