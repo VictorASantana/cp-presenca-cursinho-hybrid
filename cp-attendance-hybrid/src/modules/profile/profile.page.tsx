@@ -7,10 +7,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { EditProfileModal } from "./components/edit-profile-modal.component";
 import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
 import { useAuth } from "@src/context/auth.context";
+import { useUser } from "@src/context/user.context";
 
 export const Profile: React.FC = () => {
   const [editProfileVisible, setEditProfileVisible] = React.useState(false);
   const auth = useAuth();
+  const user = useUser();
 
   const handleEditProfileTap = () => {
     setEditProfileVisible(true);
@@ -25,7 +27,7 @@ export const Profile: React.FC = () => {
       <ProfileHeaderStyled>
         <SafeAreaView />
         <ProfilePhoto size={120}/>
-        <ProfileHeaderTitle>{'Fulano da Silva'}</ProfileHeaderTitle>
+        <ProfileHeaderTitle>{user.user?.username}</ProfileHeaderTitle>
         <ProfileHeaderText>{'ID 01'}</ProfileHeaderText>
       </ProfileHeaderStyled>
       <ProfileAreaViewStyled>
@@ -39,7 +41,7 @@ export const Profile: React.FC = () => {
       <EditProfileModal visible={editProfileVisible} title="Meus Dados">
         <EditModalItem>
           <EditModalItemTitle>{'Nome: '}</EditModalItemTitle>
-          <EditModalItemText>{'Fulano da Silva Sauro'}</EditModalItemText>
+          <EditModalItemText>{user.user?.username}</EditModalItemText>
         </EditModalItem>
         <EditModalItem>
           <EditModalItemTitle>{'Telefone: '}</EditModalItemTitle>
@@ -47,7 +49,7 @@ export const Profile: React.FC = () => {
         </EditModalItem>
         <EditModalItem>
           <EditModalItemTitle>{'Email: '}</EditModalItemTitle>
-          <EditModalItemText>{'fulanosilva@email.com'}</EditModalItemText>
+          <EditModalItemText>{user.user?.email}</EditModalItemText>
         </EditModalItem>
         <ModalButton text="Editar" />
         <ModalButton text="Cancelar" outline onTap={() => setEditProfileVisible(false)}/>

@@ -2,6 +2,7 @@ import { createContext, ReactElement, useContext, useEffect, useState } from "re
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContextData, AuthData } from "@src/data/types/auth/auth.type";
 import { AuthService } from "@src/data/service/auth.service";
+import { useUser } from "./user.context";
 
 interface AuthProviderProps {
   children: ReactElement;
@@ -12,6 +13,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const [authData, setAuthData] = useState<AuthData>();
   const [loading, setLoading] = useState(true);
+  const user = useUser();
 
   useEffect(() => {
     loadStorageData();
@@ -34,6 +36,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const _authData =  await AuthService.signIn(email, password);
     if (!(_authData instanceof Error)) {
       setAuthData(_authData);
+      user.setUser({ username: _authData.name, email: _authData.email })
       await AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
       return _authData.token;
     } else {
