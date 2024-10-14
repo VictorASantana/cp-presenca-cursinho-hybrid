@@ -15,8 +15,9 @@ import { LessonService } from "@src/data/service/lesson.service";
 import EmptyState from "@freakycoder/react-native-empty-state";
 import EmptyStateImage from '../../../assets/EmptyStateImage.png';
 import ErrorStateImage from '../../../assets/ErrorStateImage.png';
-import { CustomModal } from "@src/components/modal/modal.component";
+import { CustomModal } from "@src/components/modal/attendance-modal/attendance-modal.component";
 import { useUser } from "@src/context/user.context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //TODO: passar filtragem para o backend
 
@@ -29,6 +30,7 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [errorLesson, setErrorLesson] = useState<Error>();
   const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
+  const [lessonId, setLessonId] = useState('');
   const user = useUser();
 
   useEffect(() => {
@@ -47,14 +49,13 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
     navigation.navigate('Profile');
   }
 
-  const handleAttendanceTap = () => {
-    
-  }
-
-  const renderItem = ({ item }: { item: { subject: string, startDatetime: Date, endDatetime: Date, isAttendanceRegistrable: boolean } }) => {
+  const getChecked = () => {
+    return !!AsyncStorage.getItem(lessonId) 
+  } 
+  const renderItem = ({ item }: { item: { subject: string, startDatetime: Date, endDatetime: Date, isAttendanceRegistrable: boolean, id: number } }) => {
     return (
       <View style={{ margin: Theme.Spacing.small }}>
-        <ClassCard onClick={() => setAttendanceModalOpen(true)} title={item.subject} time={item.startDatetime} activate={item.isAttendanceRegistrable} isNow={isNowBetween(item.startDatetime, item.endDatetime)}/>
+        <ClassCard isChecked={getChecked()} onClick={() => { setAttendanceModalOpen(true); setLessonId(item.id + '') }} title={item.subject} time={item.startDatetime} activate={item.isAttendanceRegistrable} isNow={isNowBetween(item.startDatetime, item.endDatetime)}/>
       </View>
     )
   }
@@ -99,7 +100,7 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
           />
         }
         {
-          attendanceModalOpen && <CustomModal visible={attendanceModalOpen} close={() => setAttendanceModalOpen(false)} text={"Registrar presença"} />
+          attendanceModalOpen && <CustomModal lessonId={lessonId} studentId={user.user?.id ?? '1'} visible={attendanceModalOpen} close={() => setAttendanceModalOpen(false)} text={"Registrar presença"} />
         }
       </HomeBodyStyled>
     </GlobalContainer>

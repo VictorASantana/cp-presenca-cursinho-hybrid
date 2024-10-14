@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, View } from 'react-native';
-import { ButtonArea } from '../modal.component.style';
+import { ButtonArea } from '../attendance-modal/attendance-modal.component.style';
 import { ModalButton } from '@src/components/button/button-modal/modal-button.component';
 import { SubjectModalBackground, SubjectModalContainer, SubjectModalHeader, SubjectModalText, SubjectModalTitle } from './subject-modal.component.style';
 import { mapColor } from 'assets/utils/utils';
