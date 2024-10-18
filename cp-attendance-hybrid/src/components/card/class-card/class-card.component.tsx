@@ -1,3 +1,4 @@
+import { formatDateToHHMM } from "@src/data/mapper/subject/subject.mapper";
 import { ClassCardButtonStyled, ClassCardButtonTextStyled, ClassCardStyled, ClassCardTextStyled, ClassCardTitleStyled } from "./class-card.component.style";
 
 interface ClassCardProps {
@@ -10,11 +11,6 @@ interface ClassCardProps {
 }
 
 export const ClassCard: React.FC<ClassCardProps> = props => {
-  function formatDateToHHMM(date: Date): string {
-    const hours: string = String(date.getHours()).padStart(2, '0'); // Obtém as horas e garante que tenha 2 dígitos
-    const minutes: string = String(date.getMinutes()).padStart(2, '0'); // Obtém os minutos e garante que tenha 2 dígitos
-    return `${hours}:${minutes}`; // Retorna a string no formato HH:MM
-  }
 
   return (
     <ClassCardStyled numberOfClasses={1} activated={props.isNow}>

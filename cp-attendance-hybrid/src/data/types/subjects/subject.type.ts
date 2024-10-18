@@ -1,6 +1,6 @@
 export interface Subject {
   name: string;
-  teacher: string;
+  mainSubject: string;
   weekDateTimes: ClassDay[];
 };
 
