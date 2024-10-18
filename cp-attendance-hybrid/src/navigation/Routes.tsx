@@ -13,7 +13,7 @@ import { Profile } from '@src/modules/profile/profile.page';
 import { useEffect, useRef } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { useAuth } from '@src/context/auth.context';
-import { Subject } from '@src/modules/subjects/subjects.page';
+import { Subjects } from '@src/modules/subjects/subjects.page';
 
 export type RootStackParamsList = {
   Home?: undefined;
@@ -113,7 +113,7 @@ const TabNavigator = () => {
             <TabButton onPress={props.onPress} selected={props.accessibilityState?.selected ?? false} icon={'home'} label='Home'/>
           ),    
         }}/>
-        <Tab.Screen name='Subjects' component={Subject} options={{
+        <Tab.Screen name='Subjects' component={Subjects} options={{
           headerShown: false,
           tabBarButton: (props) => (
             <TabButton onPress={props.onPress} selected={props.accessibilityState?.selected ?? false} icon={'book'} label='Disciplinas'/>

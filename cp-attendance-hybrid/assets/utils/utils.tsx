@@ -2,30 +2,22 @@ import { Theme } from "assets/theme/theme"
 
 export const mapColor = (subject: string) => {
   switch (subject) {
-    case 'Mat': 
+    case 'MT': 
       return Theme.Subjects.mat;
-    case 'Qui': 
+    case 'CH': 
       return Theme.Subjects.qui;
-    case 'Quí': 
-      return Theme.Subjects.qui;
-    case 'His': 
+    case 'HI': 
       return Theme.Subjects.hist;
-    case 'Geo': 
+    case 'GE': 
       return Theme.Subjects.geo;
-    case 'Bio': 
+    case 'BI': 
       return Theme.Subjects.bio;
-    case 'Por': 
+    case 'PT': 
       return Theme.Subjects.por;
-    case 'Phys': 
+    case 'PH': 
       return Theme.Subjects.phys;
-    case 'Fís': 
-      return Theme.Subjects.phys;
-    case 'Phyl': 
+    case 'PL': 
       return Theme.Subjects.phil;
-    case 'Fil': 
-      return Theme.Subjects.phil;
-    case 'Att': 
-      return Theme.Subjects.att;
     default: 
       return Theme.Subjects.att;
   } 
