@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Title } from "assets/utils/global.style";
 import { GeneralMetricsMainText, GeneralMetricsStyled, GeneralMetricsText, GeneralMetricsTextArea, MetricsBodyStyled, MetricsHeaderStyled, MetricsStyled, SubjectMetrics, SubjectMetricsTextArea, SubjectMetricsTitle, TopAreaView } from "./metrics.page.style";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,7 +9,11 @@ import { RootStackParamsList } from "@src/navigation/Routes";
 import { RouteProp } from "@react-navigation/native";
 import { CircularProgress } from "@src/components/graphic/circular-graphic/circular-graphic.component";
 import { ProgressBar } from "@src/components/graphic/bar-graph/bar-graph.component";
-import { metricsMock, totalMetricsMock } from "@src/data/mock/metrics-mock";
+import { MetricsService } from "@src/data/service/metrics.service";
+import { AttendanceInfo, MetricsItem } from "@src/data/types/metrics/metrics-item.type";
+import EmptyState from "@freakycoder/react-native-empty-state";
+import EmptyStateImage from '../../../assets/EmptyStateImage.png';
+import { mapSubject } from "assets/utils/utils";
 
 type MetricsScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamsList, 'Metrics'>;
@@ -17,10 +21,44 @@ type MetricsScreenProps = {
 };
 
 export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
+  const [subjectsStatus, setSubjectsStatus] = useState<AttendanceInfo[]>([]);
+  const [total, setTotal] = useState(0);
+  const [absences, setAbsences] = useState(0);
+  function transformData(data: MetricsItem[]): AttendanceInfo[] {
+    const resultMap: { [subject: string]: AttendanceInfo} = {};
+    let totalAbsences = 0;
+    for (const item of data) {
+      const { subject, status } = item;
+      if (!resultMap[subject]) {
+          resultMap[subject] = { subject, total: 0, absences: 0 };
+      }
+
+      resultMap[subject].total += 1;
+      if (status === "A") {
+          resultMap[subject].absences += 1;
+          totalAbsences += 1;
+      }
+    }
+    setAbsences(totalAbsences);
+    return Object.values(resultMap);
+}
 
   const handleBackTap = () => {
     navigation.pop();
   }
+
+  useEffect(() => {
+    const getAttendances = async () => {
+      const attendances = await MetricsService.listAttendances();
+      if (!(attendances instanceof Error)) {
+        const subjectsMetrics = transformData(attendances);
+        setSubjectsStatus(subjectsMetrics);
+        setTotal(attendances.length);
+      }
+    }
+    getAttendances();
+  }, []);
+
 
   return (
     <>
@@ -33,22 +71,30 @@ export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
       </MetricsHeaderStyled>
         <MetricsBodyStyled>
         <GeneralMetricsStyled>
-          <CircularProgress percentage={(totalMetricsMock.total - totalMetricsMock.absences)/totalMetricsMock.total * 100} />
+          <CircularProgress percentage={total > 0 ? Number(((total - absences)/total * 100).toFixed(2)) : 0} />
           <GeneralMetricsTextArea>
-            <GeneralMetricsMainText>{totalMetricsMock.total - totalMetricsMock.absences + ' aulas presente'}</GeneralMetricsMainText>
-            <GeneralMetricsText>{totalMetricsMock.absences + ' aulas ausente'}</GeneralMetricsText>
+            <GeneralMetricsMainText>{total - absences + ' aulas presente'}</GeneralMetricsMainText>
+            <GeneralMetricsText>{absences + ' aulas ausente'}</GeneralMetricsText>
           </GeneralMetricsTextArea>
         </GeneralMetricsStyled>
-        <MetricsStyled>
+        {subjectsStatus.length > 0 ? 
+          <MetricsStyled>
           <SubjectMetrics>
-            {metricsMock.map(metrics => (
+            {subjectsStatus.map(metrics => (
               <><SubjectMetricsTextArea key={metrics.subject}>
-                <SubjectMetricsTitle>{metrics.subject}</SubjectMetricsTitle>
-                <SubjectMetricsTitle>{(metrics.percentage*100) + '%'}</SubjectMetricsTitle>
-              </SubjectMetricsTextArea><ProgressBar progress={metrics.percentage*100} /></>
-            ))  }
-          </SubjectMetrics>
-        </MetricsStyled>
+                <SubjectMetricsTitle>{mapSubject(metrics.subject)}</SubjectMetricsTitle>
+                <SubjectMetricsTitle>{Number((((metrics.total - metrics.absences)/metrics.total)*100).toFixed(2)) + '%'}</SubjectMetricsTitle>
+              </SubjectMetricsTextArea><ProgressBar progress={(((metrics.total - metrics.absences)/metrics.total)*100)} /></>
+            ))}
+          </SubjectMetrics> 
+        </MetricsStyled> :
+          <EmptyState 
+          title={"Ops!"} 
+          description={"Parece que você ainda não tem informações sobre suas aulas"} 
+          imageSource={EmptyStateImage} 
+          style={{marginBottom: 140, backgroundColor: Theme.Colors.white, borderRadius: 8}}
+        />
+        }
       </MetricsBodyStyled>
     </>
   );

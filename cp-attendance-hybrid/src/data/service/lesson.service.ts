@@ -1,4 +1,3 @@
-import axios from "axios";
 import api from "../datasource/apit"
 import { lessonMapper } from "../mapper/lesson/lesson.mapper";
 
