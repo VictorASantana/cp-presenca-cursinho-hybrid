@@ -14,6 +14,7 @@ import { AttendanceInfo, MetricsItem } from "@src/data/types/metrics/metrics-ite
 import EmptyState from "@freakycoder/react-native-empty-state";
 import EmptyStateImage from '../../../assets/EmptyStateImage.png';
 import { mapSubject } from "assets/utils/utils";
+import { useUser } from "@src/context/user.context";
 
 type MetricsScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamsList, 'Metrics'>;
@@ -24,6 +25,7 @@ export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
   const [subjectsStatus, setSubjectsStatus] = useState<AttendanceInfo[]>([]);
   const [total, setTotal] = useState(0);
   const [absences, setAbsences] = useState(0);
+  const user = useUser();
   function transformData(data: MetricsItem[]): AttendanceInfo[] {
     const resultMap: { [subject: string]: AttendanceInfo} = {};
     let totalAbsences = 0;
@@ -49,7 +51,7 @@ export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
 
   useEffect(() => {
     const getAttendances = async () => {
-      const attendances = await MetricsService.listAttendances();
+      const attendances = await MetricsService.listAttendances(Number(user.user?.id));
       if (!(attendances instanceof Error)) {
         const subjectsMetrics = transformData(attendances);
         setSubjectsStatus(subjectsMetrics);

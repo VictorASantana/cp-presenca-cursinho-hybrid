@@ -5,6 +5,9 @@ import { ActivityIndicator, Image, Keyboard, KeyboardAvoidingView, Platform } fr
 import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "@src/context/auth.context";
+import { UserService } from "@src/data/service/user.service";
+import { useUser } from "@src/context/user.context";
+import { StudentService } from "@src/data/service/student.service";
 
 export const Signin: React.FC = () => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
@@ -13,6 +16,7 @@ export const Signin: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false); 
   const auth = useAuth();
+  const user = useUser();
 
   const signIn = async () => {
     setLoading(true);
@@ -21,6 +25,14 @@ export const Signin: React.FC = () => {
     if (response instanceof Error) {
       setLoading(false);
       setError(true);
+    } else {
+      const userInfo = await UserService.getUserInfo();
+      if (!(userInfo instanceof Error)) {
+        const student = await StudentService.getStudentInfo(userInfo.id);
+        if (!(student instanceof Error)) {
+          user.setUser({ username: userInfo.name, email: userInfo.email, id: student.id, studentClass: student.studentClass })
+        }
+      }
     }
   };
 

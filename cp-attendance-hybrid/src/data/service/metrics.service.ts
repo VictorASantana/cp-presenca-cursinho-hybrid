@@ -3,9 +3,9 @@ import { metricsMapper } from "../mapper/metrics/metrics.mapper";
 import { MetricsItem } from "../types/metrics/metrics-item.type";
 
 export const MetricsService = {
-  async listAttendances(): Promise<MetricsItem[] | Error> {
+  async listAttendances(id: number): Promise<MetricsItem[] | Error> {
     try {
-      const response = await api.get('/attendance/1');
+      const response = await api.get(`/attendance/${id}`);
       if (!!response.data) {
         const metrics = response.data.map((attendance: any) => metricsMapper(attendance));
         return metrics;

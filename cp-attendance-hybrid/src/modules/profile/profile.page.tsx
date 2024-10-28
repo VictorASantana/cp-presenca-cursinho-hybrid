@@ -51,7 +51,7 @@ export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
       <ProfileAreaViewStyled>
         <ProfileButtonAreaStyled>
           <ButtonCard icon="lock-closed-outline" text="Alterar Senha" onTap={() => console.log('click')} />
-          <ButtonCard icon="notifications-outline" text="Notificações" onTap={() => console.log('click')} />
+          {/* <ButtonCard icon="notifications-outline" text="Notificações" onTap={() => console.log('click')} /> */}
           <ButtonCard icon="person-outline" text="Meus Dados" onTap={handleEditProfileTap} />
           <ButtonCard icon="log-out-outline" text="Sair" onTap={handleLogoutTap} color={Theme.Colors.secondary} />
         </ProfileButtonAreaStyled>
@@ -61,15 +61,15 @@ export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
           <EditModalItemTitle>{'Nome: '}</EditModalItemTitle>
           <EditModalItemText>{user.user?.username}</EditModalItemText>
         </EditModalItem>
-        <EditModalItem>
+        {/* <EditModalItem>
           <EditModalItemTitle>{'Telefone: '}</EditModalItemTitle>
           <EditModalItemText>{'(99)99999-9999'}</EditModalItemText>
-        </EditModalItem>
+        </EditModalItem> */}
         <EditModalItem>
           <EditModalItemTitle>{'Email: '}</EditModalItemTitle>
           <EditModalItemText>{user.user?.email}</EditModalItemText>
         </EditModalItem>
-        <ModalButton text="Editar" />
+        {/* <ModalButton text="Editar" /> */}
         <ModalButton text="Cancelar" outline onTap={() => setEditProfileVisible(false)}/>
       </EditProfileModal>
     </>
