@@ -21,7 +21,6 @@ export const Subjects: React.FC = () => {
     const getSubjects = async () => {
       const subjectVector = await SubjectService.getSubjects();
       if (!( subjectVector instanceof Error)) {
-        console.log(subjectVector);
         setSubjects(subjectVector);
       } else {
         setError(true);
