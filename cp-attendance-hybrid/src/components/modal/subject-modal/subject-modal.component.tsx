@@ -6,11 +6,12 @@ import { SubjectModalBackground, SubjectModalContainer, SubjectModalHeader, Subj
 import { mapColor } from 'assets/utils/utils';
 import { ClassDay } from '@src/data/types/subjects/subject.type';
 import Icon from 'react-native-vector-icons/Entypo';
+import { mainSubjectMapper } from '@src/data/mapper/subject/subject.mapper';
 
 interface ModalProps {
   visible: boolean,
   subject: string,
-  teacher: string,
+  mainSubject: string,
   weekDays: ClassDay[],
   close: () => void,
 }
@@ -25,11 +26,11 @@ export const SubjectModal = (props: ModalProps) => {
     >
       <SubjectModalBackground>
         <SubjectModalContainer>
-          <SubjectModalHeader color={mapColor(props.subject.slice(0,3))}>
+          <SubjectModalHeader color={mapColor(props.mainSubject)}>
             <SubjectModalTitle>{props.subject}</SubjectModalTitle>
           </SubjectModalHeader>
           <ButtonArea>
-            <SubjectModalText>{'Professor: ' + props.teacher}</SubjectModalText>
+            <SubjectModalText>{'Disciplina: ' + mainSubjectMapper(props.mainSubject)}</SubjectModalText>
             <SubjectModalText>{'Horários de aula: '}</SubjectModalText>
             {props.weekDays.map(lesson => (
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -37,7 +38,7 @@ export const SubjectModal = (props: ModalProps) => {
                 <SubjectModalText>{lesson.weekDay + ' : ' + lesson.startTime + ' - ' + lesson.endTime}</SubjectModalText>
               </View>
             ))}
-            <ModalButton text={'Cancelar'} outline onTap={props.close} color={mapColor(props.subject.slice(0,3))}/>
+            <ModalButton text={'Cancelar'} outline onTap={props.close} color={mapColor(props.mainSubject)}/>
           </ButtonArea>
         </SubjectModalContainer>
       </SubjectModalBackground>
