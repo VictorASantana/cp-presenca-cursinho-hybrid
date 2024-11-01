@@ -2,9 +2,9 @@ import api from "../datasource/apit"
 import { lessonMapper } from "../mapper/lesson/lesson.mapper";
 
 export const LessonService = {
-  async listLessons(): Promise<Lesson[] | Error> {
+  async listLessons(id: string): Promise<Lesson[] | Error> {
     try {
-      const response = await api.get('/mobile_lesson_with_details');
+      const response = await api.get(`/mobile_lesson_with_details/${id}`);
       if (!!response.data) {
         const mappedResponse = response.data.map((lesson: any) => lessonMapper(lesson));
         return mappedResponse;
