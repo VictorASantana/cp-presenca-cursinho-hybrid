@@ -19,17 +19,18 @@ export const Subjects: React.FC = () => {
   const [selected, setSelected] = useState(0);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(false);
   const user = useUser();
 
   const getSubjects = useCallback(async () => {
+    setLoading(true);
     const subjectVector = await SubjectService.getSubjects(String(user.user?.studentClass));
-      if (!( subjectVector instanceof Error)) {
-        setSubjects(subjectVector);
-      } else {
-        setError(true);
-      }
+    if (!( subjectVector instanceof Error)) {
+      setSubjects(subjectVector);
+    } else {
+      setError(true);
+    }
+    setLoading(false);
   }, [])
 
   useEffect(() => {
@@ -38,10 +39,8 @@ export const Subjects: React.FC = () => {
 
   const handleRefresh = async () => {
     setLoading(true);
-    setRefreshing(true);
     await getSubjects();
     setLoading(false);
-    setRefreshing(false);
   }
 
   return (

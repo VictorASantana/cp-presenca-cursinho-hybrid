@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Title } from "assets/utils/global.style";
 import { GeneralMetricsMainText, GeneralMetricsStyled, GeneralMetricsText, GeneralMetricsTextArea, MetricsBodyStyled, MetricsHeaderStyled, MetricsStyled, SubjectMetrics, SubjectMetricsTextArea, SubjectMetricsTitle, TopAreaView } from "./metrics.page.style";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,6 +15,7 @@ import EmptyState from "@freakycoder/react-native-empty-state";
 import EmptyStateImage from '../../../assets/EmptyStateImage.png';
 import { mapSubject } from "assets/utils/utils";
 import { useUser } from "@src/context/user.context";
+import { ActivityIndicator, View } from "react-native";
 
 type MetricsScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamsList, 'Metrics'>;
@@ -23,6 +24,7 @@ type MetricsScreenProps = {
 
 export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
   const [subjectsStatus, setSubjectsStatus] = useState<AttendanceInfo[]>([]);
+  const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const [absences, setAbsences] = useState(0);
   const user = useUser();
@@ -49,18 +51,26 @@ export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
     navigation.pop();
   }
 
-  useEffect(() => {
-    const getAttendances = async () => {
-      const attendances = await MetricsService.listAttendances(Number(user.user?.id));
+  const getAttendances = useCallback(async () => {
+    const attendances = await MetricsService.listAttendances(Number(user.user?.id));
+      setLoading(true);
       if (!(attendances instanceof Error)) {
         const subjectsMetrics = transformData(attendances);
         setSubjectsStatus(subjectsMetrics);
         setTotal(attendances.length);
       }
-    }
+      setLoading(false);
+  }, [])
+
+  useEffect(() => {
     getAttendances();
   }, []);
 
+  const handleRefresh = async () => {
+    setLoading(true);
+    await getAttendances();
+    setLoading(false);
+  }
 
   return (
     <>
@@ -79,7 +89,11 @@ export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
             <GeneralMetricsText>{absences + ' aulas ausente'}</GeneralMetricsText>
           </GeneralMetricsTextArea>
         </GeneralMetricsStyled>
-        {subjectsStatus.length > 0 ? 
+        {loading ? 
+          <View>
+            <ActivityIndicator size={70} style={{ alignSelf: "center" }} color={Theme.Colors.secondary}/>
+          </View> :
+        subjectsStatus.length > 0 ? 
           <MetricsStyled>
           <SubjectMetrics>
             {subjectsStatus.map(metrics => (
@@ -91,11 +105,15 @@ export const Metrics: React.FC<MetricsScreenProps> = ({ navigation }) => {
           </SubjectMetrics> 
         </MetricsStyled> :
           <EmptyState 
-          title={"Ops!"} 
-          description={"Parece que você ainda não tem informações sobre suas aulas"} 
-          imageSource={EmptyStateImage} 
-          style={{marginBottom: 140, backgroundColor: Theme.Colors.white, borderRadius: 8}}
-        />
+            title={"Ops!"} 
+            description={"Parece que você ainda não tem informações sobre suas aulas"} 
+            imageSource={EmptyStateImage} 
+            style={{marginBottom: 140, backgroundColor: Theme.Colors.white, borderRadius: 8}}
+            enableButton
+            buttonStyle={{ backgroundColor: Theme.Colors.primary, padding: 10, borderRadius: 8 }}
+            buttonText="Tentar novamente?"
+            onPress={handleRefresh}
+          />
         }
       </MetricsBodyStyled>
     </>
