@@ -3,9 +3,9 @@ import { subjectMapper } from "../mapper/subject/subject.mapper";
 import { Subject } from "../types/subjects/subject.type";
 
 export const SubjectService = {
-  async getSubjects(): Promise<Subject[] | Error> {
+  async getSubjects(id: string): Promise<Subject[] | Error> {
     try {
-      const response = await api.get('/subject_with_details');
+      const response = await api.get(`/subject_with_details/${id}`);
       if (!!response.data) {
         const mappedResponse = response.data.map((subject: any) => subjectMapper(subject));
         return mappedResponse;
