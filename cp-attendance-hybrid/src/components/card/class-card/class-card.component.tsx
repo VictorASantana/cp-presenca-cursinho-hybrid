@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toZonedTime } from 'date-fns-tz';
 import { ClassCardButtonStyled, ClassCardButtonTextStyled, ClassCardStyled, ClassCardTextStyled, ClassCardTitleStyled } from "./class-card.component.style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -22,8 +23,9 @@ export const ClassCard: React.FC<ClassCardProps> = props => {
   }, [props.onClick]);
   
   function formatDateToHHMM(date: Date): string {
-    const hours: string = String(date.getHours()).padStart(2, '0');
-    const minutes: string = String(date.getMinutes()).padStart(2, '0');
+    const localeDate = toZonedTime(date, 'America/Sao_Paulo');
+    const hours: string = String(localeDate.getHours()).padStart(2, '0');
+    const minutes: string = String(localeDate.getMinutes()).padStart(2, '0');
     return `${hours}:${minutes}`; 
   }
 

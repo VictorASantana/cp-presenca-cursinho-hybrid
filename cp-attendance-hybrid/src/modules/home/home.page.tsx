@@ -2,7 +2,7 @@ import { Body, GlobalContainer, Subtitle, Title } from "assets/utils/global.styl
 import { ClassCard } from "@src/components/card/class-card/class-card.component";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HomeBodyStyled, HomeHeaderStyled } from "./home.page.style";
-import { FlatList, Image, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, View } from "react-native";
 import { ProfilePhoto } from "@src/components/profile/profile-photo.component";
 import { RootStackParamsList } from "@src/navigation/Routes";
 import { Theme } from "assets/theme/theme";
@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LessonService } from "@src/data/service/lesson.service";
 import EmptyState from "@freakycoder/react-native-empty-state";
 import EmptyStateImage from '../../../assets/EmptyStateImage.png';
@@ -30,19 +30,32 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [errorLesson, setErrorLesson] = useState<Error>();
   const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
   const [lessonId, setLessonId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const user = useUser();
 
-  useEffect(() => {
-    const getLessons = async () => {
-      const lessonVector = await LessonService.listLessons(String(user.user?.studentClass));
+  const getLessons = useCallback(async () => {
+    setLoading(true);
+    const lessonVector = await LessonService.listLessons(String(user.user?.studentClass));
       if (!(lessonVector instanceof Error)){
         const filteredArray = lessonVector.filter(lesson => isToday(lesson.startDatetime) && lesson.endDatetime > new Date())
         setLessons(filteredArray);
       } 
       else setErrorLesson(lessonVector);
-    }
+      setLoading(false);
+  }, []);
+
+  useEffect(() => {
     getLessons();
   }, [attendanceModalOpen]);
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    setRefreshing(true);
+    await getLessons();
+    setLoading(false);
+    setRefreshing(false);
+  }
 
   const handleProfileTap = () => {
     navigation.navigate('Profile');
@@ -84,15 +97,25 @@ export const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
         </View>
       </View>
       <HomeBodyStyled>
-        {lessons.length > 0 ? <FlatList 
+        {loading ? 
+          <View style={{ marginTop: 200 }}>
+            <ActivityIndicator size={70} style={{ alignSelf: "center" }} color={Theme.Colors.secondary}/>
+          </View> :
+        lessons.length > 0 ? <FlatList 
           data={lessons.filter(lesson => isToday(lesson.startDatetime) && lesson.endDatetime > new Date())}
           renderItem={renderItem}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
         /> : 
           <EmptyState 
             title={errorLesson ? "Erro!" : "Sem aulas encontradas"} 
             description={errorLesson ? "Não foi possivel encontrar suas aulas, tente novamente mais tarde." : "Parece que você não tem aulas hoje."} 
             imageSource={errorLesson ? ErrorStateImage : EmptyStateImage} 
-            imageStyle={{ marginTop: 120, width: 120, height: 120 }}
+            imageStyle={{ marginTop: 70, width: 120, height: 120 }}
+            enableButton
+            buttonStyle={{ backgroundColor: Theme.Colors.primary, padding: 10, borderRadius: 8 }}
+            buttonText="Tentar novamente?"
+            onPress={handleRefresh}
           />
         }
         {
