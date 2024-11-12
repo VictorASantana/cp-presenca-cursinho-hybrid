@@ -25,8 +25,9 @@ export const Subjects: React.FC = () => {
   const getSubjects = useCallback(async () => {
     setLoading(true);
     const subjectVector = await SubjectService.getSubjects(String(user.user?.studentClass));
-    if (!( subjectVector instanceof Error)) {
+    if (!(subjectVector instanceof Error)) {
       setSubjects(subjectVector);
+      setError(false);
     } else {
       setError(true);
     }

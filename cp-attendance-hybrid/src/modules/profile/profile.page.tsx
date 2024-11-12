@@ -50,7 +50,7 @@ export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
       </ProfileHeaderStyled>
       <ProfileAreaViewStyled>
         <ProfileButtonAreaStyled>
-          <ButtonCard icon="lock-closed-outline" text="Alterar Senha" onTap={() => console.log('click')} />
+          {/* {<ButtonCard icon="lock-closed-outline" text="Alterar Senha" onTap={() => console.log('click')} />} */}
           {/* <ButtonCard icon="notifications-outline" text="Notificações" onTap={() => console.log('click')} /> */}
           <ButtonCard icon="person-outline" text="Meus Dados" onTap={handleEditProfileTap} />
           <ButtonCard icon="log-out-outline" text="Sair" onTap={handleLogoutTap} color={Theme.Colors.secondary} />

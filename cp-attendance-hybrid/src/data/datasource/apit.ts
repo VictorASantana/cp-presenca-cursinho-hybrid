@@ -1,10 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const BASE_URL = 'https://ecd0-131-196-30-248.ngrok-free.app'
-
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: 'https://8f93b153-5a35-4f2a-9fe3-05dd8ed2746f.e1-us-east-azure.choreoapps.dev/choreo-apis/monitoramento-de-presenca/backend/v1/',
 });
 
 api.interceptors.request.use(

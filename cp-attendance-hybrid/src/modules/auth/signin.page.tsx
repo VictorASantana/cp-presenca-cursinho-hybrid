@@ -10,7 +10,6 @@ import { useUser } from "@src/context/user.context";
 import { StudentService } from "@src/data/service/student.service";
 
 export const Signin: React.FC = () => {
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,20 +34,6 @@ export const Signin: React.FC = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setIsKeyboardVisible(true);
-    });
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setIsKeyboardVisible(false);
-    });
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
   
   return (
     <SiginContainerStyled>
@@ -56,9 +41,9 @@ export const Signin: React.FC = () => {
       <SigninLogoStyled>
         <Image source={ require('../../../assets/LogoCPofc.png')}/>
       </SigninLogoStyled>
-      <SignBodyStyled isKeyboardVisible={isKeyboardVisible}>
+      <SignBodyStyled >
         <SigninTitle>{'Login'}</SigninTitle>
-        <ButtonAreaStyled isKeyboardVisible={isKeyboardVisible}>
+        <ButtonAreaStyled>
           {error && <LoginErrorMessage>{'Não foi possível realizar o Login'}</LoginErrorMessage>}
           <InputField placeholder="Email" value={email} onChangeText={setEmail}/>
           <InputField placeholder="Senha" secureTextEntry value={password} onChangeText={setPassword}/>
