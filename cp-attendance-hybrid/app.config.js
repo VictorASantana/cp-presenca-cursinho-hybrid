@@ -5,6 +5,9 @@ export default {
     name: "CpAttemdanceHybrid",
     slug: "cp-attendance-hybrid",
     version: "1.0.1",
+    android: {
+      package: "com.vsenny.cpattendancehybrid"
+    },
     extra: {
       apiUrl: process.env.BASE_URL,
       eas: {

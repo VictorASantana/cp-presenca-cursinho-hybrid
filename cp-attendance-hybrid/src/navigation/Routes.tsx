@@ -4,7 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home } from '@src/modules/home/home.page';
 import Menu from '@src/modules/menu/menu.page';
 import { Metrics } from '@src/modules/metrics/metrics.page';
-import { Signin } from '@src/modules/auth/signin.page';
+import { Signin } from '@src/modules/auth/signin/signin.page';
+import { SendEmail } from '@src/modules/auth/send-email/send-email.page';
 import { Theme } from 'assets/theme/theme';
 import { GestureResponderEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -14,6 +15,9 @@ import { useEffect, useRef } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { useAuth } from '@src/context/auth.context';
 import { Subjects } from '@src/modules/subjects/subjects.page';
+import { useUser } from '@src/context/user.context';
+import React from 'react';
+import { PasswordReset } from '@src/modules/auth/password-reset/password-reset.page';
 
 export type RootStackParamsList = {
   Home?: undefined;
@@ -23,6 +27,8 @@ export type RootStackParamsList = {
   Signin?: undefined;
   Schedule?: undefined;
   Subjects?: undefined;
+  SendEmail?: undefined;
+  PasswordReset: {token: string};
   Tabs?: undefined;
 };
 
@@ -138,6 +144,12 @@ const AppStack = () => {
       <Stack.Screen name='Schedule' component={Schedule} options={() => ({
         headerShown: false,
       })}/>
+      <Stack.Screen name='SendEmail' component={SendEmail} options={() => ({
+        headerShown: false,
+      })}/>
+      <Stack.Screen name='PasswordReset' component={PasswordReset} options={() => ({
+        headerShown: false,
+      })}/>
     </Stack.Navigator>
   )
 }
@@ -145,17 +157,19 @@ const AppStack = () => {
 
 export const Routes = () => {
   const {authData} = useAuth();
+  const user = useUser();
 
   return (
     <NavigationContainer>
-      {!authData?.token ? 
+      {authData?.token && user.user?.id ? 
+        <AppStack /> :
         <Stack.Navigator>
           <Stack.Screen name='Signin' component={Signin} options={() => ({
             headerShown: false,
             animationTypeForReplace: 'push',
           })}/>
-        </Stack.Navigator> :
-        <AppStack />
+        </Stack.Navigator>
+        
       }
     </NavigationContainer>
   );

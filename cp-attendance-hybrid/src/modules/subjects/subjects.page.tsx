@@ -71,7 +71,7 @@ export const Subjects: React.FC = () => {
           <SubjectsContainer>
             {subjects.map((subject, index) => (
               <SubjectCard 
-                key={subject.name} 
+                key={subject.name + index} 
                 name={subject.name} 
                 mainSubject={subject.mainSubject} 
                 onClick={() => {

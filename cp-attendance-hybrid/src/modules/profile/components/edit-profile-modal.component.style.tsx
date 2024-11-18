@@ -33,7 +33,7 @@ export const ModalContent = styled.View`
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
   padding: 20px;
-  flex: 0.3;
+  flex: 0.4;
   justify-content: center;
   gap: 20px;
 `;

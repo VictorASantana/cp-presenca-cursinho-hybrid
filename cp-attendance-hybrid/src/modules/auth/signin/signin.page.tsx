@@ -1,13 +1,14 @@
 import { InputField } from "@src/components/input-field/input-field.component.style";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ButtonAreaStyled, ForgetPassword, LoginErrorMessage, SiginContainerStyled, SignBodyStyled, SigninLogoStyled, SigninTitle } from "./signin.page.style";
-import { ActivityIndicator, Image, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import { ActivityIndicator, Image } from "react-native";
 import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "@src/context/auth.context";
 import { UserService } from "@src/data/service/user.service";
 import { useUser } from "@src/context/user.context";
 import { StudentService } from "@src/data/service/student.service";
+import LogoCpOfc from "../../../../assets/LogoCPofc.png";
 
 export const Signin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -39,7 +40,7 @@ export const Signin: React.FC = () => {
     <SiginContainerStyled>
       <SafeAreaView />
       <SigninLogoStyled>
-        <Image source={ require('../../../assets/LogoCPofc.png')}/>
+        <Image source={LogoCpOfc}/>
       </SigninLogoStyled>
       <SignBodyStyled >
         <SigninTitle>{'Login'}</SigninTitle>
