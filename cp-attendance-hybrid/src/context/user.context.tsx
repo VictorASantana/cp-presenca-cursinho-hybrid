@@ -5,6 +5,8 @@ interface User {
   username: string;
   email: string;
   studentClass?: string;
+  startTime: Date;
+  endTime: Date;
 }
 
 interface UserContextType {

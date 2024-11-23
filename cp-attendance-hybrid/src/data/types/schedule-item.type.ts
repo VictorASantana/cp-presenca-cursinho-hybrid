@@ -3,4 +3,5 @@ export interface ScheduleItem {
   startTime: string;
   endTime: string;
   subject: string;
+  name: string;
 }

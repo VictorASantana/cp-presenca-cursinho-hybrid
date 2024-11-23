@@ -1,7 +1,7 @@
 import { Title } from "assets/utils/global.style";
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SubjectsBody, SubjectsContainer, SubjectsHeader } from "./subjects.page.style";
+import { SubjectsBody, SubjectsContainer, SubjectsHeader, SubjectsPageContainer } from "./subjects.page.style";
 import { ActivityIndicator, ScrollView } from "react-native";
 import { SubjectCard } from "@src/components/card/subject-card/subject-card.component";
 import { SubjectModal } from "@src/components/modal/subject-modal/subject-modal.component";
@@ -45,7 +45,7 @@ export const Subjects: React.FC = () => {
   }
 
   return (
-    <>
+    <SubjectsPageContainer>
     <SafeAreaView />
     <SubjectsHeader>
       <Title>{'Disciplinas'}</Title>  
@@ -53,7 +53,7 @@ export const Subjects: React.FC = () => {
     <SubjectsBody>
       <ScrollView>
         {loading ? 
-        <View style={{ marginTop: 240 }}>
+        <View>
           <ActivityIndicator size={70} style={{ alignSelf: "center" }} color={Theme.Colors.secondary}/>
         </View> :
           error ? 
@@ -84,6 +84,6 @@ export const Subjects: React.FC = () => {
       </ScrollView>
       {subjects.length > 0 && <SubjectModal weekDays={subjects[selected].weekDateTimes} visible={modalVisible} subject={subjects[selected].name} mainSubject={subjects[selected].mainSubject} close={() => setModalVisible(false)} />}
     </SubjectsBody>
-    </>
+    </SubjectsPageContainer>
   );
 }

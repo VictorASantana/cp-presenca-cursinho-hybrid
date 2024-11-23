@@ -42,7 +42,14 @@ export const Signin: React.FC<SigninScreenProps> = ({ navigation }) => {
       if (!(userInfo instanceof Error)) {
         const student = await StudentService.getStudentInfo(userInfo.id);
         if (!(student instanceof Error)) {
-          user.setUser({ username: userInfo.name, email: userInfo.email, id: student.id, studentClass: student.studentClass })
+          user.setUser({ 
+            username: userInfo.name, 
+            email: userInfo.email, 
+            id: student.id, 
+            studentClass: student.studentClass, 
+            startTime: student.studentClassStartDateTime, 
+            endTime: student.studentClassEndDateTime 
+          })
         }
       }
     }
