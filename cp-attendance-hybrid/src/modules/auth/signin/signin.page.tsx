@@ -48,8 +48,11 @@ export const Signin: React.FC<SigninScreenProps> = ({ navigation }) => {
             id: student.id, 
             studentClass: student.studentClass, 
             startTime: student.studentClassStartDateTime, 
-            endTime: student.studentClassEndDateTime 
+            endTime: student.studentClassEndDateTime,
+            profilePhoto: userInfo.profilePhoto
           })
+        } else {
+          setError(true);
         }
       }
     }
