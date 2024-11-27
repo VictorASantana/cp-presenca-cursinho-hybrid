@@ -27,7 +27,6 @@ export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const [editProfileVisible, setEditProfileVisible] = React.useState(false);
   const [editPhotoVisible, setEditPhotoVisible] = React.useState(false);
   const [profileImage, setProfileImage] = React.useState<UserPhoto | null>();
-  const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const auth = useAuth();
@@ -71,7 +70,6 @@ export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
     if (profileImage && user.user?.id) {
       const response = await UserService.uploadProfilePhoto(profileImage, Number(user.user.id));
       if (!(response instanceof Error)) {
-        setSuccess(true);
         user.setUser({ ...user.user, profilePhoto: profileImage.uri})
         setEditPhotoVisible(false);
         setProfileImage(null);
@@ -85,7 +83,6 @@ export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const closeEditProfilePhotoModal = () => {
     setEditPhotoVisible(false);
     setProfileImage(null);
-    setSuccess(false);
     setError('');
   }
 
@@ -152,6 +149,7 @@ export const Profile: React.FC<ProfileScreenProps> = ({ navigation }) => {
         <ModalButton text="Cancelar" outline onTap={() => setEditProfileVisible(false)}/>
       </EditProfileModal>
       <EditProfileModal visible={editPhotoVisible} title="Editar Foto">
+        {error && <EditModalItemText>{error}</EditModalItemText>}
         {loading ? 
           <ActivityIndicator /> :
           profileImage ? 
