@@ -1,4 +1,4 @@
-package com.vsenny.cpattendancehybrid
+package com.cp.cpattendancehybrid
 
 import android.os.Build
 import android.os.Bundle

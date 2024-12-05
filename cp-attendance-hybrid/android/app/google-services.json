@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "451935279414",
+    "project_id": "cursinho-hybrid",
+    "storage_bucket": "cursinho-hybrid.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451935279414:android:32b3f73777c77f756b3b97",
+        "android_client_info": {
+          "package_name": "com.cp.cpattendancehybrid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3JgEzAJ6ydJ0TclherCThCOXNua8l3UI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

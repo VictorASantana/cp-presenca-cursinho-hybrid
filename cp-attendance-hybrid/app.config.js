@@ -4,9 +4,10 @@ export default {
   expo: {
     name: "CP-Aluno",
     slug: "cp-attendance-hybrid",
+    owner: "cpaluno",
     version: "1.0.1",
     android: {
-      package: "com.vsenny.cpattendancehybrid"
+      package: "com.cp.cpattendancehybrid"
     },
     extra: {
       apiUrl: process.env.HOMOL_URL || "https://110be7f4-a4e0-4869-b1c6-b31c3e146096-prod.e1-us-east-azure.choreoapis.dev/monitoramento-de-presenca/backend/v1.0",
