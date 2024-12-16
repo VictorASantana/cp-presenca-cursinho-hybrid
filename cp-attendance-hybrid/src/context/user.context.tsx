@@ -5,6 +5,7 @@ interface User {
   username: string;
   email: string;
   studentClass?: string;
+  profilePhoto?: string;
   startTime: Date;
   endTime: Date;
 }

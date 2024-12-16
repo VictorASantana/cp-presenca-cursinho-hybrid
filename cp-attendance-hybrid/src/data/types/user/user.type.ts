@@ -3,4 +3,11 @@ export interface User {
   email: string;
   studentClass: string;
   id: string;
+  profilePhoto?: string;
+}
+
+export interface UserPhoto {
+  uri: string;
+  type: string;
+  name: string;
 }
