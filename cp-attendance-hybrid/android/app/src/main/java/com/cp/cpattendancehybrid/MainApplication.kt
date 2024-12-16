@@ -1,4 +1,4 @@
-package com.vsenny.cpattendancehybrid
+package com.cp.cpattendancehybrid
 
 import android.app.Application
 import android.content.res.Configuration
@@ -14,6 +14,7 @@ import com.facebook.soloader.SoLoader
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
+import com.google.firebase.FirebaseApp
 
 class MainApplication : Application(), ReactApplication {
 
@@ -45,6 +46,7 @@ class MainApplication : Application(), ReactApplication {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
+    FirebaseApp.initializeApp(this);
     ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 

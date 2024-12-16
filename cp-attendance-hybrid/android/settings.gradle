@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'CpAttemdanceHybrid'
+rootProject.name = 'CP-Aluno'
 
 dependencyResolutionManagement {
   versionCatalogs {
