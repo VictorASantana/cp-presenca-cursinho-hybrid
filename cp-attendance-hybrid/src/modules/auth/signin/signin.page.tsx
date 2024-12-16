@@ -1,16 +1,16 @@
 import { InputField } from "@src/components/input-field/input-field.component.style";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ButtonAreaStyled, ForgetPassword, LoginErrorMessage, SiginContainerStyled, SignBodyStyled, SigninLogoStyled, SigninTitle } from "./signin.page.style";
-import { ActivityIndicator, Image, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import { ActivityIndicator, Image } from "react-native";
 import { ModalButton } from "@src/components/button/button-modal/modal-button.component";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "@src/context/auth.context";
 import { UserService } from "@src/data/service/user.service";
 import { useUser } from "@src/context/user.context";
 import { StudentService } from "@src/data/service/student.service";
+import LogoCpOfc from "../../../../assets/LogoCPofc.png";
 
 export const Signin: React.FC = () => {
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,30 +35,16 @@ export const Signin: React.FC = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setIsKeyboardVisible(true);
-    });
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setIsKeyboardVisible(false);
-    });
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
   
   return (
     <SiginContainerStyled>
       <SafeAreaView />
       <SigninLogoStyled>
-        <Image source={ require('../../../assets/LogoCPofc.png')}/>
+        <Image source={LogoCpOfc}/>
       </SigninLogoStyled>
-      <SignBodyStyled isKeyboardVisible={isKeyboardVisible}>
+      <SignBodyStyled >
         <SigninTitle>{'Login'}</SigninTitle>
-        <ButtonAreaStyled isKeyboardVisible={isKeyboardVisible}>
+        <ButtonAreaStyled>
           {error && <LoginErrorMessage>{'Não foi possível realizar o Login'}</LoginErrorMessage>}
           <InputField placeholder="Email" value={email} onChangeText={setEmail}/>
           <InputField placeholder="Senha" secureTextEntry value={password} onChangeText={setPassword}/>

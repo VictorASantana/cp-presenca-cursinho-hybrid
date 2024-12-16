@@ -18,22 +18,22 @@ export const SigninLogoStyled = styled.View`
   align-items: center;
 `
 
-export const SignBodyStyled = styled.View<{ isKeyboardVisible: boolean }>`
+export const SignBodyStyled = styled.View`
   background-color: ${Theme.Colors.white};
   border-top-left-radius: ${Theme.Spacing.halfGutter}px;
   position: absolute;
   width: 100%;
-  height: ${props => props.isKeyboardVisible ? '60%' : '70%'};
+  height: 70%;
   bottom: 0;
   justify-content: center;
   align-items: center;
 `;
 
-export const ButtonAreaStyled = styled.View<{ isKeyboardVisible: boolean }>`
+export const ButtonAreaStyled = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  margin-bottom: ${props => props.isKeyboardVisible ? Theme.Spacing.gutter / 2.5 : Theme.Spacing.gutter * 2}px;
+  margin-bottom: ${Theme.Spacing.gutter * 3}px;
 `;
 
 export const SigninTitle = styled.Text`

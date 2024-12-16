@@ -5,7 +5,7 @@ import { User } from "../types/user/user.type";
 export const UserService = {
   async getUserInfo(): Promise<User | Error> {
     try {
-      const response = await api.get('/user/self');
+      const response = await api.get('/user/self/');
       if (!!response.data) {
         const userInfo = userMapper(response.data);
         return userInfo;

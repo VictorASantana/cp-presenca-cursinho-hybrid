@@ -8,10 +8,10 @@ interface StudentInfo {
 export const StudentService = {
   async getStudentInfo(id: string): Promise<StudentInfo | Error> {
     try {
-      const response = await api.get(`/student/mobile/${id}`);
+      const response = await api.get(`/student/mobile/${id}/`);
       if (!!response.data) {
         return {
-          studentClass: response.data.student_class,
+          studentClass: response.data.student_class.id,
           id: response.data.id,
         };
       }

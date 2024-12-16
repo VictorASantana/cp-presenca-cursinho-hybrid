@@ -25,8 +25,9 @@ export const Subjects: React.FC = () => {
   const getSubjects = useCallback(async () => {
     setLoading(true);
     const subjectVector = await SubjectService.getSubjects(String(user.user?.studentClass));
-    if (!( subjectVector instanceof Error)) {
+    if (!(subjectVector instanceof Error)) {
       setSubjects(subjectVector);
+      setError(false);
     } else {
       setError(true);
     }
@@ -70,7 +71,7 @@ export const Subjects: React.FC = () => {
           <SubjectsContainer>
             {subjects.map((subject, index) => (
               <SubjectCard 
-                key={subject.name} 
+                key={subject.name + index} 
                 name={subject.name} 
                 mainSubject={subject.mainSubject} 
                 onClick={() => {
