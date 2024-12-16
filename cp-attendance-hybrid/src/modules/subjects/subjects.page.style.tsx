@@ -1,13 +1,18 @@
 import { Theme } from "assets/theme/theme";
 import styled from "styled-components/native";
 
+export const SubjectsPageContainer = styled.View`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const SubjectsHeader = styled.View`
-  flex: 0.1;
+  display: flex;
   padding: ${Theme.Spacing.medium}px;
 `;
 
 export const SubjectsBody = styled.View`
-  flex: 0.9;
+  display: flex;
   width: 95%;
   background-color: ${Theme.Colors.white};
   margin-bottom: 120px;

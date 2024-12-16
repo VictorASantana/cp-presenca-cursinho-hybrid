@@ -1,47 +1,38 @@
-import React from "react";
-import { Cell, HeaderCell, HeaderRow, Row, TableContainer,  } from "./schedule.page.style";
+import React, { useCallback, useEffect, useState } from "react";
+import { Cell, HeaderCell, HeaderRow, HeaderTextStyled  } from "./schedule.page.style";
 import { ScheduleItem } from "@src/data/types/schedule-item.type";
-import { scheduleMock } from "@src/data/mock/schedule.mock";
 import { ScheduleCard } from "@src/components/card/schedule-card/schedule-card.component";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import { Title } from "assets/utils/global.style";
 import { Theme } from "assets/theme/theme";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "@src/navigation/Routes";
 import { RouteProp } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Entypo';
+import { useUser } from "@src/context/user.context";
+import { SubjectService } from "@src/data/service/subject.service";
+import { Subject } from "@src/data/types/subjects/subject.type";
+import { ScheduleMapper } from "@src/data/mapper/schedule.mapper";
+import EmptyState from "@freakycoder/react-native-empty-state";
+import EmptyStateImage from '../../../assets/EmptyStateImage.png';
 
-const CELL_HEIGHT = 100;
-const TOTAL_HOURS = 12; 
 
-const createEmptyTable = (days: string[], hours: string[]) => {
-  const table: { [key: string]: { [key: string]: ScheduleItem[] } } = {};
-  hours.forEach(hour => {
-    table[hour] = {};
-    days.forEach(day => {
-      table[hour][day] = [];
-    });
-  });
-  return table;
-};
+const generateHourlyRange = (startDateTime: Date, endDateTime: Date): string[] => {
+  const result: string[] = [];
+  let currentDateTime = new Date(startDateTime);
+  const finalTime = new Date(endDateTime);
 
-const getCellTop = (startTime: string) => {
-  const [hours, minutes] = startTime.split(':').map(Number);
-  const totalMinutes = hours * 60 + minutes;
-  return ((totalMinutes - 720) / 60) * CELL_HEIGHT;
-};
-
-const getCardHeight = (startTime: string, endTime: string) => {
-  const [startHours, startMinutes] = startTime.split(':').map(Number);
-  const [endHours, endMinutes] = endTime.split(':').map(Number);
-  const startTotalMinutes = startHours * 60 + startMinutes;
-  const endTotalMinutes = endHours * 60 + endMinutes;
-  return ((endTotalMinutes - startTotalMinutes) / 60) * CELL_HEIGHT;
-};
+  while (currentDateTime <= finalTime) {
+    result.push(
+      currentDateTime.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })
+    );
+    currentDateTime.setHours(currentDateTime.getHours() + 1);
+  }
+  return result;
+}
 
 const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
-const hours = ['16:05', '17:00', '17:55', '18:50', '19:40', '20:10', '21:05'];
 
 type ScheduleScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamsList, 'Schedule'>;
@@ -49,59 +40,128 @@ type ScheduleScreenProps = {
 };
 
 export const Schedule: React.FC<ScheduleScreenProps> = ({ navigation }) => {
+  const [error, setError] = useState(false);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const user = useUser();
+  const hours = !!user.user ? generateHourlyRange(user.user?.startTime, user.user?.endTime) : [];
 
-  const table = createEmptyTable(days, hours);
-
-  const scheduleItems = scheduleMock;
-
-  scheduleItems.forEach(item => {
-    const timeKey = hours.find(hour => hour === item.startTime);
-    if (timeKey) {
-      table[timeKey][item.weekDay].push(item);
+  const getSubjects = useCallback(async () => {
+    setLoading(true);
+    const subjectVector = await SubjectService.getSubjects(String(user.user?.studentClass));
+    if (!(subjectVector instanceof Error)) {
+      if (subjectVector.length > 0) {
+        setSubjects(subjectVector);
+      }
+      setError(false);
+    } else {
+      setError(true);
     }
-  });
+    setLoading(false);
+  }, [user]);
+
+  useEffect(() => {
+    getSubjects();
+  }, [getSubjects]);
+
+  useEffect(() => {
+    setScheduleItems(subjects.flatMap(subject => ScheduleMapper(subject)));
+  }, [subjects]);
 
   const handleBackTap = () => {
     navigation.pop();
+  };
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    setRefreshing(true);
+    await getSubjects();
+    setLoading(false);
+    setRefreshing(false);
   }
+
+  const renderHeader = () => (
+    <HeaderRow>
+      {days.map((day, index) => (
+        <HeaderCell key={index}>
+          <HeaderTextStyled>{day}</HeaderTextStyled>
+        </HeaderCell>
+        ))
+      }
+    </HeaderRow>
+  );
+
+  const renderRow = (time: string) => (
+    <View style={{ flexDirection: 'row' }}>
+      {days.map((day) => {
+        const item = scheduleItems.find((s) => s.weekDay.slice(0, 3) === day && s.startTime.split(':')[0] === time.split(':')[0]);
+        return (
+          item ? 
+            <Cell>
+              <ScheduleCard 
+                startTime={item.startTime}
+                endTime={item.endTime}
+                subject={item.subject}
+                name={item.name} 
+                cardHeight={100} 
+                cardTop={10}              
+              /> 
+            </Cell> : 
+            <Cell>
+              <HeaderTextStyled>{'-'}</HeaderTextStyled>
+            </Cell>
+        );
+      })}
+    </View>
+  )
+
 
   return (
     <>
       <SafeAreaView />
-      <View style={{marginLeft: 8, flexDirection: 'row'}}>
-        <Icon name={'chevron-left'} color={Theme.Colors.darkGray} size={30} style={{ marginRight: 8, marginTop: 20 }} onPress={handleBackTap}/>
+      <View style={{ marginLeft: 8, flexDirection: 'row' }}>
+        <Icon
+          name={'chevron-left'}
+          color={Theme.Colors.darkGray}
+          size={30}
+          style={{ marginRight: 8, marginTop: 20 }}
+          onPress={handleBackTap}
+        />
         <Title>{'Grade Horária'}</Title>
       </View>
-      <ScrollView>
-        <TableContainer>
-          <HeaderRow>
-            <HeaderCell />
-            {days.map((day) => (
-              <HeaderCell key={day}>{day}</HeaderCell>
-            ))}
-          </HeaderRow>
-          {hours.map((hour) => (
-            <Row key={hour}>
-              <HeaderCell>{hour}</HeaderCell>
-              {days.map((day) => (
-                <Cell key={`${hour}-${day}`}>{
-                  table[hour][day].map((item, index) => (
-                    <ScheduleCard 
-                      key={index}
-                      subject={item.subject}
-                      startTime={item.startTime}
-                      endTime={item.endTime}
-                      cardHeight={getCardHeight(item.startTime, item.endTime)}
-                      cardTop={getCellTop(item.startTime)}
-                    />
-                  ))
-                }</Cell>
-              ))}
-            </Row>
-          ))}
-      </TableContainer>
-      </ScrollView>  
+      {loading ? 
+          <View style={{ marginTop: 200 }}>
+            <ActivityIndicator size={70} style={{ alignSelf: "center" }} color={Theme.Colors.secondary}/>
+          </View> :
+        scheduleItems.length > 0 ? (
+          <FlatList
+            data={hours}
+            ListHeaderComponent={renderHeader} 
+            renderItem={({ item }) => renderRow(item)}
+          />
+        ) : (
+          error ? 
+          <EmptyState
+            title={'Erro!'}
+            description={'Não foi possível carregar sua grade horária.'}
+            imageSource={EmptyStateImage}
+            enableButton
+            buttonStyle={{ backgroundColor: Theme.Colors.primary, padding: 10, borderRadius: 8 }}
+            buttonText="Tentar novamente?"
+            onPress={handleRefresh}
+          /> :
+          <EmptyState
+            title={'Ops!'}
+            description={'Você ainda não tem aulas cadastradas.'}
+            imageSource={EmptyStateImage}
+            enableButton
+            buttonStyle={{ backgroundColor: Theme.Colors.primary, padding: 10, borderRadius: 8 }}
+            buttonText="Tentar novamente?"
+            onPress={handleRefresh}
+          />
+        )}
     </>
-    
   );
-}
+};

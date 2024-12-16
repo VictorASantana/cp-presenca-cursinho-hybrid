@@ -168,6 +168,9 @@ export const Routes = () => {
             headerShown: false,
             animationTypeForReplace: 'push',
           })}/>
+          <Stack.Screen name='SendEmail' component={SendEmail} options={() => ({
+            headerShown: false,
+          })}/>
         </Stack.Navigator>
         
       }

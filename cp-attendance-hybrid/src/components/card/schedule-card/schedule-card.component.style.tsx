@@ -24,6 +24,7 @@ export const ScheduleCardTextStyled = styled.Text`
   font-size: 16px;
   font-weight: bold;
   color: ${Theme.Colors.white};
+  text-align: center;
 `;
 
 export const ScheduleCardHourStyled = styled.Text`

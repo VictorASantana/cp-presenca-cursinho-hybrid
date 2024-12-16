@@ -5,6 +5,7 @@ import { mapColor, mapSubject } from "assets/utils/utils";
 
 interface ScheduleCardProps {
   subject: string;
+  name: string;
   startTime: string;
   endTime: string;
   cardHeight: number;
@@ -15,7 +16,7 @@ export const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   return (
     <ScheduleCardStyled color={mapColor(props.subject)} cardHeight={props.cardHeight} cardTop={props.cardTop}>
       <ScheduleCardHourStyled>{props.startTime}</ScheduleCardHourStyled>
-      <ScheduleCardTextStyled>{mapSubject(props.subject).slice(0, 3)}</ScheduleCardTextStyled>
+      <ScheduleCardTextStyled>{props.name}</ScheduleCardTextStyled>
       <ScheduleCardHourStyled>{props.endTime}</ScheduleCardHourStyled>
     </ScheduleCardStyled>
   );
